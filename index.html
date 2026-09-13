@@ -1,0 +1,1043 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BMA II Week on Week</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@500;600;700;800&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-page:#F0E4D4;
+    --surface:#FFFCF7;
+    --surface-alt:#F8F1E7;
+    --surface-sunken:#E4D5C1;
+    --ink-primary:#33261A;
+    --ink-secondary:#6B5947;
+    --ink-muted:#96826C;
+    --ink-on-accent:#FFFDF8;
+    --border:rgba(51,38,26,0.14);
+    --border-soft:rgba(51,38,26,0.075);
+    --accent:#A85F22;
+    --accent-soft:#F0DFC7;
+    --accent-ink:#7A430F;
+    --series-1:#356FA8;
+    --series-2:#C2691C;
+    --series-3:#8158A8;
+    --status-good:#1E7E46;
+    --status-good-bg:#DDEFE3;
+    --status-warn:#9C6510;
+    --status-warn-bg:#F5E7CE;
+    --status-critical:#AE342D;
+    --status-critical-bg:#F6DFDB;
+    --status-info:#65499B;
+    --status-info-bg:#EAE3F5;
+    --shadow-card:0 1px 2px rgba(51,38,26,0.05), 0 8px 24px -16px rgba(51,38,26,0.30);
+    color-scheme:light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg-page:#171310;
+      --surface:#1F1A15;
+      --surface-alt:#282118;
+      --surface-sunken:#120F0C;
+      --ink-primary:#F3EADC;
+      --ink-secondary:#C7B7A3;
+      --ink-muted:#948572;
+      --ink-on-accent:#1B120A;
+      --border:rgba(255,255,255,0.11);
+      --border-soft:rgba(255,255,255,0.06);
+      --accent:#E29A46;
+      --accent-soft:#3B2E1C;
+      --accent-ink:#F4CE9B;
+      --series-1:#3E8FDB;
+      --series-2:#C8822A;
+      --series-3:#9E7BDD;
+      --status-good:#3FBE79;
+      --status-good-bg:#173325;
+      --status-warn:#E3A83F;
+      --status-warn-bg:#3A2C13;
+      --status-critical:#E88178;
+      --status-critical-bg:#3B1C19;
+      --status-info:#B9A6EA;
+      --status-info-bg:#2A2140;
+      --shadow-card:0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -16px rgba(0,0,0,0.6);
+      color-scheme:dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg-page:#171310;
+    --surface:#1F1A15;
+    --surface-alt:#282118;
+    --surface-sunken:#120F0C;
+    --ink-primary:#F3EADC;
+    --ink-secondary:#C7B7A3;
+    --ink-muted:#948572;
+    --ink-on-accent:#1B120A;
+    --border:rgba(255,255,255,0.11);
+    --border-soft:rgba(255,255,255,0.06);
+    --accent:#E29A46;
+    --accent-soft:#3B2E1C;
+    --accent-ink:#F4CE9B;
+    --series-1:#3E8FDB;
+    --series-2:#C8822A;
+    --series-3:#9E7BDD;
+    --status-good:#3FBE79;
+    --status-good-bg:#173325;
+    --status-warn:#E3A83F;
+    --status-warn-bg:#3A2C13;
+    --status-critical:#E88178;
+    --status-critical-bg:#3B1C19;
+    --status-info:#B9A6EA;
+    --status-info-bg:#2A2140;
+    --shadow-card:0 1px 2px rgba(0,0,0,0.3), 0 8px 24px -16px rgba(0,0,0,0.6);
+    color-scheme:dark;
+  }
+
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg-page);color:var(--ink-primary);font-family:"IBM Plex Sans Thai","IBM Plex Sans",system-ui,sans-serif;}
+  .page{max-width:1240px;margin:0 auto;padding:40px 24px 64px;}
+  h1,h2,h3{font-family:"Kanit","IBM Plex Sans Thai",sans-serif;margin:0;text-wrap:balance;}
+  .tabular{font-variant-numeric:tabular-nums;}
+
+  /* Header */
+  .hdr{text-align:center;padding-bottom:24px;}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:600;letter-spacing:0.12em;color:var(--accent-ink);text-transform:uppercase;}
+  .eyebrow::before,.eyebrow::after{content:"";width:20px;height:1px;background:var(--accent);opacity:0.55;}
+  .hdr h1{font-size:38px;font-weight:800;margin-top:10px;}
+  .hdr p.sub{color:var(--ink-secondary);font-size:15px;margin:10px auto 0;max-width:680px;line-height:1.6;}
+  .pill-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:16px;}
+  .asof-pill{display:inline-flex;align-items:center;gap:8px;padding:7px 16px;border-radius:999px;background:var(--surface-sunken);color:var(--ink-secondary);font-size:12.5px;font-weight:500;}
+  .asof-pill b{color:var(--ink-primary);font-weight:600;}
+  .dot{width:6px;height:6px;border-radius:50%;background:var(--status-good);}
+  .dot.s1{background:var(--series-1);}
+  .dot.s2{background:var(--series-2);}
+  .dot.s3{background:var(--series-3);}
+
+  /* Filter bar */
+  .filterbar{position:sticky;top:0;z-index:30;background:var(--bg-page);padding:14px 0 10px;margin-bottom:4px;border-bottom:1px solid var(--border-soft);}
+  .filterbar-inner{display:flex;flex-wrap:wrap;align-items:center;gap:10px 12px;padding-right:56px;}
+  .filter-row{display:flex;flex-wrap:wrap;gap:8px;}
+  .filter-spacer{flex:1 1 auto;min-width:8px;}
+  .subbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:10px;padding-top:10px;border-top:1px dashed var(--border-soft);}
+  .subbar.hidden{display:none;}
+  .subbar-label{font-size:11px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--ink-muted);margin-right:2px;}
+  .subbar-count{font-size:11.5px;font-weight:600;color:var(--ink-muted);white-space:nowrap;}
+  .pill-btn.shop.active{background:var(--ink-primary);border-color:var(--ink-primary);color:var(--bg-page);}
+  .pill-btn.shop .tick{opacity:0.55;margin-right:5px;font-size:11px;}
+
+  .pill-btn{font-family:inherit;font-size:13.5px;font-weight:600;color:var(--ink-secondary);background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:8px 16px;cursor:pointer;transition:all .15s ease;white-space:nowrap;}
+  .pill-btn:hover{border-color:var(--accent);color:var(--ink-primary);}
+  .pill-btn.active{background:var(--ink-primary);border-color:var(--ink-primary);color:var(--bg-page);}
+  .pill-btn.sm{font-size:12.5px;padding:6px 13px;}
+  .pill-btn.sm.active{background:var(--accent);border-color:var(--accent);color:var(--ink-on-accent);}
+  .pill-btn:focus-visible,.iconbtn:focus-visible,.th-sort:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  .metric-toggle{display:inline-flex;border:1px solid var(--border);border-radius:999px;background:var(--surface);padding:3px;gap:2px;}
+  .metric-toggle button{font-family:inherit;font-size:12.5px;font-weight:600;color:var(--ink-secondary);background:none;border:none;border-radius:999px;padding:6px 14px;cursor:pointer;}
+  .metric-toggle button.active{background:var(--accent);color:var(--ink-on-accent);}
+  .upload-btn{display:inline-flex;align-items:center;gap:7px;font-family:inherit;font-size:12.5px;font-weight:600;color:var(--accent-ink);background:var(--accent-soft);border:1px solid transparent;border-radius:999px;padding:8px 15px;cursor:pointer;}
+  .upload-btn:hover{border-color:var(--accent);}
+  .theme-toggle{position:fixed;top:16px;right:18px;z-index:60;width:42px;height:42px;border-radius:50%;border:1px solid var(--border);background:var(--surface);box-shadow:var(--shadow-card);cursor:pointer;font-size:18px;line-height:1;display:flex;align-items:center;justify-content:center;padding:0;transition:transform .15s ease;}
+  .theme-toggle:hover{transform:scale(1.07);}
+
+  /* Section */
+  .section{margin-top:36px;}
+  .section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:16px;}
+  .section-tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--accent-ink);background:var(--accent-soft);padding:4px 10px;border-radius:6px;margin-bottom:8px;}
+  .section-head h2{font-size:21px;font-weight:700;}
+  .section-head p{margin:4px 0 0;font-size:13.5px;color:var(--ink-secondary);}
+
+  /* KPI */
+  .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:18px 20px;box-shadow:var(--shadow-card);}
+  .kpi-head{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+  .kpi-label{font-size:12px;font-weight:700;color:var(--ink-muted);text-transform:uppercase;letter-spacing:0.04em;}
+  .kpi-cmp{font-size:10.5px;font-weight:700;padding:3px 8px;border-radius:6px;background:var(--surface-sunken);color:var(--ink-secondary);white-space:nowrap;}
+  .kpi-value{font-family:"Kanit",sans-serif;font-size:27px;font-weight:700;margin-top:10px;line-height:1.1;font-variant-numeric:tabular-nums;}
+  .kpi-delta{margin-top:9px;font-size:13.5px;font-weight:700;display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-variant-numeric:tabular-nums;}
+  .up{color:var(--status-good);}
+  .down{color:var(--status-critical);}
+  .flat{color:var(--ink-muted);}
+  .kpi-delta .amt{font-weight:600;}
+  .kpi-note{margin-top:9px;font-size:11.5px;color:var(--ink-muted);line-height:1.5;}
+  .kpi-note b{color:var(--ink-secondary);font-weight:600;}
+
+  /* Chart */
+  .chart-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px 24px 26px;box-shadow:var(--shadow-card);}
+  .chart-legend{display:flex;flex-wrap:wrap;gap:18px;margin-bottom:18px;font-size:12.5px;color:var(--ink-secondary);font-weight:600;}
+  .chart-legend span{display:inline-flex;align-items:center;gap:7px;}
+  .legend-swatch{width:12px;height:12px;border-radius:3px;}
+  #chartRows{width:100%;}
+  #chartRows svg text{font-family:"IBM Plex Sans Thai",system-ui,sans-serif;font-variant-numeric:tabular-nums;}
+  @media (prefers-reduced-motion:no-preference){ #chartRows path[stroke]{transition:d .3s ease;} }
+  .tooltip{position:fixed;pointer-events:none;background:var(--ink-primary);color:var(--bg-page);font-size:12px;padding:10px 12px;border-radius:10px;box-shadow:0 8px 20px rgba(0,0,0,0.28);z-index:100;opacity:0;transition:opacity .1s ease;max-width:260px;}
+  .tooltip.show{opacity:1;}
+  .tooltip .tt-title{font-weight:700;margin-bottom:6px;font-size:12.5px;}
+  .tooltip .tt-row{display:flex;justify-content:space-between;gap:16px;padding:1.5px 0;}
+  .tooltip .tt-row span:first-child{opacity:0.8;display:inline-flex;align-items:center;gap:6px;}
+  .tooltip .tt-row b{font-variant-numeric:tabular-nums;}
+  .tt-sw{width:9px;height:9px;border-radius:2px;display:inline-block;}
+
+  /* Table */
+  .table-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:var(--shadow-card);}
+  table{width:100%;border-collapse:collapse;min-width:860px;}
+  thead th{text-align:right;font-size:10.5px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-muted);padding:11px 14px;border-bottom:1px solid var(--border);background:var(--surface-alt);white-space:nowrap;}
+  thead th:first-child{text-align:left;}
+  thead tr.grp th{padding:9px 14px 4px;border-bottom:none;text-align:center;font-size:10px;letter-spacing:0.09em;color:var(--ink-secondary);}
+  thead tr.grp th.wow{background:var(--surface-alt);}
+  .th-sort{cursor:pointer;user-select:none;}
+  .th-sort:hover{color:var(--accent-ink);}
+  .th-sort.sorted{color:var(--accent-ink);}
+  .grp-div{border-left:1px solid var(--border);}
+  tbody td{padding:11px 14px;font-size:13px;text-align:right;border-bottom:1px solid var(--border-soft);font-variant-numeric:tabular-nums;white-space:nowrap;}
+  tbody td:first-child{text-align:left;}
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr:hover{background:var(--surface-alt);}
+  .shop-name{font-weight:600;}
+  .shop-type{display:block;font-size:10.5px;font-weight:500;color:var(--ink-muted);margin-top:1px;}
+  tfoot td{padding:12px 14px;font-size:13px;font-weight:700;text-align:right;border-top:2px solid var(--border);background:var(--surface-alt);font-variant-numeric:tabular-nums;white-space:nowrap;}
+  tfoot td:first-child{text-align:left;}
+  .pct{font-weight:700;}
+  .scrollx{overflow-x:auto;}
+
+  /* Insights */
+  .insight-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .insight-card{background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--status-info);border-radius:14px;padding:16px 18px;box-shadow:var(--shadow-card);}
+  .insight-card.good{border-left-color:var(--status-good);}
+  .insight-card.critical{border-left-color:var(--status-critical);}
+  .insight-badge{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;padding:3px 9px;border-radius:6px;margin-bottom:9px;}
+  .insight-badge.good{background:var(--status-good-bg);color:var(--status-good);}
+  .insight-badge.critical{background:var(--status-critical-bg);color:var(--status-critical);}
+  .insight-badge.info{background:var(--status-info-bg);color:var(--status-info);}
+  .insight-title{font-size:15px;font-weight:700;margin-bottom:5px;line-height:1.4;}
+  .insight-body{font-size:13px;color:var(--ink-secondary);line-height:1.6;}
+  .insight-body strong{color:var(--ink-primary);font-weight:700;}
+
+  .footnote{margin-top:34px;padding-top:18px;border-top:1px solid var(--border-soft);font-size:11.5px;color:var(--ink-muted);line-height:1.75;}
+  .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:var(--ink-primary);color:var(--bg-page);font-size:13px;font-weight:600;padding:11px 20px;border-radius:999px;box-shadow:0 8px 24px rgba(0,0,0,0.3);z-index:200;opacity:0;transition:opacity .2s ease;pointer-events:none;}
+  .toast.show{opacity:1;}
+
+  @media (max-width:960px){
+    .kpi-grid{grid-template-columns:1fr 1fr;}
+    .insight-grid{grid-template-columns:1fr;}
+  }
+  @media (max-width:560px){
+    .kpi-grid{grid-template-columns:1fr;}
+    .hdr h1{font-size:27px;}
+    .page{padding:28px 16px 48px;}
+  }
+</style>
+</head>
+<body>
+<button class="theme-toggle" id="themeBtn" type="button" aria-label="สลับธีมสว่าง/มืด" title="สลับธีมสว่าง/มืด">🌙</button>
+<div class="tooltip" id="tooltip"></div>
+<div class="toast" id="toast"></div>
+<input type="file" id="fileInput" accept=".xlsx,.xlsm" style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;">
+
+<div class="page">
+
+  <div class="hdr">
+    <span class="eyebrow">BMA II · South West &nbsp;·&nbsp; Weekly Sales Review</span>
+    <h1>Week on Week Performance</h1>
+    <p class="sub">เปรียบเทียบยอดขาย 7 วันล่าสุดกับ 7 วันก่อนหน้า (Week on Week) และเทียบวันเดียวกันของเดือนก่อน (Month on Month) — แยกราย Product, Shop Type และรายสาขา</p>
+    <div class="pill-row">
+      <div class="asof-pill"><span class="dot"></span> ข้อมูลล่าสุด <b id="asofDate">—</b></div>
+      <div class="asof-pill"><span class="dot s1"></span> 7 วันล่าสุด <b id="lblW1">—</b></div>
+      <div class="asof-pill"><span class="dot s2"></span> 7 วันก่อนหน้า <b id="lblW0">—</b></div>
+      <div class="asof-pill"><span class="dot s3"></span> เดือนก่อน (วันเดียวกัน) <b id="lblMM">—</b></div>
+    </div>
+  </div>
+
+  <div class="filterbar">
+    <div class="filterbar-inner">
+      <div class="filter-row" id="productRow"></div>
+      <div class="filter-spacer"></div>
+      <div class="metric-toggle" id="metricToggle"></div>
+      <button class="upload-btn" id="uploadBtn" type="button">
+        <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 10V2M7 2L4 5M7 2l3 3M2 11v1h10v-1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        อัปเดตข้อมูล (.xlsx)
+      </button>
+    </div>
+    <div class="subbar" id="shopBar">
+      <span class="subbar-label">สาขา</span>
+      <div class="filter-row" id="shopRow"></div>
+      <span class="subbar-count" id="shopCount"></span>
+    </div>
+    <div class="subbar hidden" id="subBar">
+      <span class="subbar-label" id="subBarLabel">Brand</span>
+      <div class="filter-row" id="subRow"></div>
+    </div>
+  </div>
+
+  <!-- 1. Overview -->
+  <div class="section">
+    <div class="section-head">
+      <div>
+        <span class="section-tag" id="ovTag">ภาพรวม · ทุกสาขาใน BMA II</span>
+        <h2 id="ovTitle">ภาพรวม BMA II South West</h2>
+        <p id="ovSub">ยอดรวม 8 สาขา — สีเขียว = เพิ่มขึ้น, สีแดง = ลดลง</p>
+      </div>
+    </div>
+    <div class="kpi-grid" id="kpiGrid"></div>
+  </div>
+
+  <!-- 2. Daily chart -->
+  <div class="section">
+    <div class="section-head">
+      <div>
+        <span class="section-tag">รายวัน · 3 ช่วงเทียบกัน</span>
+        <h2 id="chartTitle">ยอดขายรายวัน</h2>
+        <p id="chartSub">เทียบวันต่อวันตามลำดับวันในสัปดาห์ — ตัวเลขกำกับบนเส้น = 7 วันล่าสุด · เส้นประ = เดือนก่อน</p>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-legend" id="chartLegend"></div>
+      <div id="chartRows"></div>
+    </div>
+  </div>
+
+  <!-- 3. Shop Type -->
+  <div class="section">
+    <div class="section-head">
+      <div>
+        <span class="section-tag">ระดับที่ 2 · Shop Type</span>
+        <h2>แยกตาม Shop Type</h2>
+        <p>Matching / Non Matching / COCO</p>
+      </div>
+    </div>
+    <div class="table-card scrollx"><table id="typeTable"></table></div>
+  </div>
+
+  <!-- 4. Shop -->
+  <div class="section">
+    <div class="section-head">
+      <div>
+        <span class="section-tag">ระดับที่ 3 · รายสาขา</span>
+        <h2>แยกรายสาขา</h2>
+        <p>คลิกหัวคอลัมน์เพื่อเรียงลำดับ</p>
+      </div>
+    </div>
+    <div class="table-card scrollx"><table id="shopTable"></table></div>
+  </div>
+
+  <!-- 5. Sub dimension -->
+  <div class="section" id="subSection">
+    <div class="section-head">
+      <div>
+        <span class="section-tag" id="subSecTag">ระดับย่อย</span>
+        <h2 id="subSecTitle">แยกราย Brand</h2>
+        <p id="subSecSub">รวมทุกสาขาใน BMA II</p>
+      </div>
+    </div>
+    <div class="table-card scrollx"><table id="subTable"></table></div>
+  </div>
+
+  <!-- 6. Insights -->
+  <div class="section">
+    <div class="section-head">
+      <div>
+        <span class="section-tag">สรุปประเด็น</span>
+        <h2>ไฮไลต์ประจำสัปดาห์</h2>
+        <p>คำนวณอัตโนมัติจาก Product และมุมมองที่เลือกอยู่</p>
+      </div>
+    </div>
+    <div class="insight-grid" id="insightGrid"></div>
+  </div>
+
+  <div class="footnote" id="footnote"></div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+"use strict";
+
+/* ============ DATA (embedded) ============ */
+let DATA = {"dates":["2026-08-01","2026-08-02","2026-08-03","2026-08-04","2026-08-05","2026-08-06","2026-08-07","2026-08-08","2026-08-09","2026-08-10","2026-08-11","2026-08-12","2026-08-13","2026-08-14","2026-08-15","2026-08-16","2026-08-17","2026-08-18","2026-08-19","2026-08-20","2026-08-21","2026-08-22","2026-08-23","2026-08-24","2026-08-25","2026-08-26","2026-08-27","2026-08-28","2026-08-29","2026-08-30","2026-08-31","2026-09-01","2026-09-02","2026-09-03","2026-09-04","2026-09-05","2026-09-06","2026-09-07","2026-09-08","2026-09-09","2026-09-10","2026-09-11","2026-09-12"],"shops":[{"code":"80100483","name":"True Shop The Mall Thapra","type":"Matching"},{"code":"80100484","name":"True Shop The Mall Bangkae 2Fl.","type":"Matching"},{"code":"80100565","name":"True Shop Central Rama 2","type":"Matching"},{"code":"80100566","name":"True Shop Central Rama 2 (H)","type":"Non Matching"},{"code":"80100626","name":"True Shop Central Pinklao 3Fl.","type":"Matching"},{"code":"80100736","name":"True Shop Lotus's Bangpakok","type":"Non Matching"},{"code":"80100928","name":"True Shop Seacon Bangkae","type":"Matching"},{"code":"80101679","name":"True Shop Seacon Bangkae (D)","type":"COCO"}],"rows":[{"p":"Postpaid","c":"80100483","s":null,"m":"qty","v":[10,9,6,12,9,4,9,7,12,17,10,11,8,6,11,7,13,11,7,14,7,7,5,10,10,13,3,6,9,15,7,13,7,10,5,8,6,8,10,7,9,1,6]},{"p":"Postpaid","c":"80100484","s":null,"m":"qty","v":[16,22,34,33,16,18,15,17,20,15,32,8,17,21,18,11,12,27,15,16,14,12,16,8,29,27,20,16,7,17,14,32,24,18,20,23,24,21,21,15,9,11,18]},{"p":"Postpaid","c":"80100565","s":null,"m":"qty","v":[18,13,24,23,18,13,22,6,10,17,28,14,11,18,11,11,18,26,13,20,14,16,10,14,36,10,7,11,15,17,23,21,21,16,11,17,20,16,20,12,14,12,6]},{"p":"Postpaid","c":"80100566","s":null,"m":"qty","v":[2,2,5,1,2,2,2,1,4,0,1,0,1,0,0,0,0,0,0,0,2,2,1,1,4,0,2,1,3,2,1,2,2,0,1,2,2,1,1,1,0,0,1]},{"p":"Postpaid","c":"80100626","s":null,"m":"qty","v":[20,17,23,26,16,14,11,10,23,19,24,14,13,19,17,19,14,13,13,23,17,23,19,11,23,20,19,20,9,20,22,26,15,16,18,13,14,23,29,16,14,17,24]},{"p":"Postpaid","c":"80100736","s":null,"m":"qty","v":[2,1,1,0,0,0,0,0,1,0,1,1,1,0,4,0,0,1,1,0,0,0,0,0,0,1,2,1,0,0,1,2,1,0,2,1,1,0,0,0,1,0,0]},{"p":"Postpaid","c":"80100928","s":null,"m":"qty","v":[10,10,10,5,6,7,8,8,11,6,9,9,8,10,4,6,7,2,7,5,5,5,12,11,3,5,3,8,4,9,7,10,20,7,9,3,7,4,13,8,9,8,9]},{"p":"Postpaid","c":"80101679","s":null,"m":"qty","v":[6,2,5,3,0,3,1,1,2,3,7,4,3,3,1,6,2,5,1,0,1,2,3,2,2,4,3,2,1,9,7,1,0,2,1,7,5,0,6,0,2,3,1]},{"p":"Postpaid","c":"80100483","s":null,"m":"net","v":[4690,3991,2562,7635,4476,1896,3836,3944,6488,8334,4662,4989,3893,2694,5592,2978,6773,4857,2994,6187,3438,4093,2595,4391,5245,7355,1297,1615,4892,7387,2958,7046,2895,4040,2005,3226,2479,4592,5285,3393,4712,199,3494]},{"p":"Postpaid","c":"80100484","s":null,"m":"net","v":[12884,11278,19681,18081,9407,7956,8829,11993.1,14630,8771,17511,6242,8863,10672,11043.1,8039.8,5431,14237,10777,8037,6329,7488,10069,3495,15056,15774,10301,11457,4793,12343,10438,14048,10699,9323,13381,14027,16027,11392,11982,7538,5392,5492,11403]},{"p":"Postpaid","c":"80100565","s":null,"m":"net","v":[9954,5638,9957,11128,9951,5693,12951,2545,3843,7856,15782,6987,5810,10724,8089,5910,10934,12438,6509,11180,6746,7825,5091,7889,17669,4751,4645,5612,4788,8747,14728,10697,9478,6985,5397.8,10824,9890,5990,8745,4781,8421.8,4541,3194]},{"p":"Postpaid","c":"80100566","s":null,"m":"net","v":[1049,819,1916,399,748,649,798,499,1847,0,20,0,299,0,0,0,0,0,0,0,898,898,699,399,1975,0,900,499,2397,2098,555,843,1454,0,299,898,798,399,399,899,0,0,599]},{"p":"Postpaid","c":"80100626","s":null,"m":"net","v":[11217,11133,13523,12894,9293,10607,6410,6140,14449,10577,11446,6266,8187,9746,9784,10381,8527,6137,7427,12957,9054,12161.8,10581,7714,12667,11982,11082,12925,5392,12030,16179,16838,7086,8935,10777,7651,9537,12327,17452,10618,6886.8,9053,16276]},{"p":"Postpaid","c":"80100736","s":null,"m":"net","v":[698,599,399,0,0,0,0,0,599,0,284,699,399,0,2196,0,0,399,699,0,0,0,0,0,0,399,1098,400,0,0,699,1298,499,0,749,499,399,0,0,0,444,0,0]},{"p":"Postpaid","c":"80100928","s":null,"m":"net","v":[6211,7790,5177,3263,5039,4893,5192,6494,8640,3958,4425,4393,5228,5539,2196,6794,5694,999,7293,4174,3695,5095,9988,5293,1443,1881,3397,3247,4196,5393,3927,6176,9882,4161,4540,1497,4944,1698,6580,4194,5301,5626,5491]},{"p":"Postpaid","c":"80101679","s":null,"m":"net","v":[3417,598,1929,1148,0,1197,699,399,698,1797,3172,1247,1142,2097,399,2614,619,2095,299,0,399,719,997,798,1343,1696,743,798,299,3518,3893,599,0,1143,299,3674,2285,0,2535,0,818,1287,399]},{"p":"True Online","c":"80100483","s":null,"m":"connect","v":[4,1,2,4,1,0,2,1,2,2,1,0,3,0,2,1,2,1,2,2,2,3,0,1,2,2,1,0,0,5,2,0,1,3,0,1,0,8,3,3,1,0,1]},{"p":"True Online","c":"80100484","s":null,"m":"connect","v":[2,4,3,5,6,3,1,3,2,1,1,3,3,4,1,0,4,4,1,4,1,1,6,8,5,5,0,1,1,1,0,6,3,1,6,3,3,1,3,5,2,3,3]},{"p":"True Online","c":"80100565","s":null,"m":"connect","v":[4,2,4,5,5,5,0,2,4,4,1,1,3,1,1,0,5,5,2,4,2,1,0,6,3,2,2,1,2,1,1,3,5,3,2,1,2,5,5,3,4,3,3]},{"p":"True Online","c":"80100566","s":null,"m":"connect","v":[1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,2,1,0,1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,1,0,1,0,0,0,0]},{"p":"True Online","c":"80100626","s":null,"m":"connect","v":[6,2,3,1,5,5,6,4,4,5,7,4,5,2,2,5,3,3,1,4,1,2,4,4,2,2,3,3,4,2,3,4,3,7,5,5,4,1,3,2,1,0,5]},{"p":"True Online","c":"80100736","s":null,"m":"connect","v":[1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0]},{"p":"True Online","c":"80100928","s":null,"m":"connect","v":[4,1,2,1,1,2,3,2,4,3,4,2,3,3,1,0,1,0,5,0,2,2,4,2,2,2,2,0,2,0,4,2,0,2,4,2,3,2,3,0,2,0,2]},{"p":"True Online","c":"80101679","s":null,"m":"connect","v":[1,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1]},{"p":"True Online","c":"80100483","s":null,"m":"register","v":[2,3,1,1,2,0,1,2,3,2,1,3,1,2,2,2,2,0,1,2,3,0,1,0,3,1,4,2,0,0,2,2,3,1,2,7,1,3,0,1,0,1,3]},{"p":"True Online","c":"80100484","s":null,"m":"register","v":[4,4,6,5,2,4,0,4,1,6,3,2,3,1,6,3,1,4,3,2,3,4,4,4,2,4,2,2,6,6,4,3,3,4,4,3,5,4,5,5,3,2,3]},{"p":"True Online","c":"80100565","s":null,"m":"register","v":[4,2,6,3,2,2,2,4,3,0,3,2,5,1,3,3,5,1,2,2,1,2,6,2,1,2,6,1,2,2,3,7,4,3,2,3,5,5,1,6,1,1,2]},{"p":"True Online","c":"80100566","s":null,"m":"register","v":[0,2,0,0,0,0,0,0,0,0,0,0,0,0,2,0,1,0,2,0,0,0,2,0,0,0,0,0,1,1,0,0,0,1,0,0,0,0,0,1,0,0,0]},{"p":"True Online","c":"80100626","s":null,"m":"register","v":[6,7,6,5,2,4,5,5,4,8,4,2,3,3,4,5,2,3,4,1,4,4,8,2,3,5,2,3,4,4,7,7,6,3,3,5,2,0,5,5,5,3,3]},{"p":"True Online","c":"80100736","s":null,"m":"register","v":[0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0]},{"p":"True Online","c":"80100928","s":null,"m":"register","v":[4,1,0,3,5,0,4,2,5,4,1,2,0,2,1,5,2,0,0,3,1,6,3,2,2,2,3,3,5,5,1,2,1,2,3,2,1,1,2,3,0,2,4]},{"p":"True Online","c":"80101679","s":null,"m":"register","v":[0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,2]},{"p":"GIA","c":"80100483","s":"ACCESSORIES","m":"qty","v":[5,6,0,4,2,0,5,10,13,0,2,3,1,4,7,2,0,0,3,2,3,8,2,1,1,4,0,1,9,2,1,3,3,1,5,2,5,3,5,1,0,6,10]},{"p":"GIA","c":"80100483","s":"GADGET","m":"qty","v":[2,1,0,2,0,0,0,2,2,0,0,3,0,3,2,0,2,1,1,1,0,6,1,0,2,1,1,2,0,1,1,2,2,2,0,2,0,2,2,0,1,1,1]},{"p":"GIA","c":"80100483","s":"IOT","m":"qty","v":[1,0,0,1,0,0,0,1,0,0,0,0,1,0,1,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,3,0,0,0,0,0,1]},{"p":"GIA","c":"80100484","s":"ACCESSORIES","m":"qty","v":[12,36,7,6,15,12,38,24,34,10,18,17,8,17,21,15,15,2,15,8,16,20,43,17,4,25,27,15,19,28,24,11,19,6,20,29,33,14,8,12,35,37,41]},{"p":"GIA","c":"80100484","s":"GADGET","m":"qty","v":[4,15,6,2,5,3,11,7,14,6,7,18,3,13,17,14,1,3,3,0,2,3,13,7,5,4,11,4,9,10,5,1,3,3,1,5,5,0,1,5,1,9,16]},{"p":"GIA","c":"80100484","s":"IOT","m":"qty","v":[1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,1,0,0,2,0,0,0,1,0,0,0,0,0,0,1,1,1,0]},{"p":"GIA","c":"80100565","s":"ACCESSORIES","m":"qty","v":[16,27,11,4,4,9,24,34,32,15,18,26,7,12,15,17,14,8,7,8,10,17,37,27,19,21,18,9,16,16,20,28,14,12,10,32,21,12,10,14,16,13,37]},{"p":"GIA","c":"80100565","s":"GADGET","m":"qty","v":[8,8,3,0,5,4,6,6,3,1,0,10,7,1,4,7,8,1,4,1,3,3,5,5,3,2,0,2,4,2,1,3,4,2,2,3,4,3,1,2,3,1,5]},{"p":"GIA","c":"80100565","s":"IOT","m":"qty","v":[0,0,0,0,0,0,1,1,0,0,1,0,0,0,1,1,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,1,0]},{"p":"GIA","c":"80100566","s":"ACCESSORIES","m":"qty","v":[2,2,0,1,4,1,5,3,2,0,2,0,0,1,4,0,0,0,3,0,0,0,1,0,1,2,0,0,0,2,1,1,0,0,0,0,0,0,2,0,0,3,0]},{"p":"GIA","c":"80100566","s":"GADGET","m":"qty","v":[0,1,0,0,0,0,1,0,1,0,0,0,2,0,0,0,0,1,0,0,0,2,0,1,1,0,0,0,1,0,0,1,0,0,0,1,0,0,0,0,0,0,0]},{"p":"GIA","c":"80100566","s":"IOT","m":"qty","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"GIA","c":"80100626","s":"ACCESSORIES","m":"qty","v":[14,29,12,15,9,7,36,43,47,25,8,28,28,18,41,42,8,19,16,23,25,35,42,29,12,10,21,16,28,24,19,9,19,13,11,39,58,16,5,25,48,30,86]},{"p":"GIA","c":"80100626","s":"GADGET","m":"qty","v":[3,10,7,7,4,2,12,14,12,5,9,15,6,6,15,14,10,7,4,8,7,4,7,6,2,3,5,2,7,1,10,5,4,5,2,8,4,10,3,6,5,7,12]},{"p":"GIA","c":"80100626","s":"IOT","m":"qty","v":[1,1,0,2,0,0,0,2,2,4,0,1,1,2,0,0,2,0,0,0,1,3,2,0,1,2,0,0,1,0,0,2,0,1,2,2,0,0,1,0,1,1,5]},{"p":"GIA","c":"80100736","s":"ACCESSORIES","m":"qty","v":[0,1,1,1,0,0,0,1,0,0,0,0,0,3,1,0,2,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0]},{"p":"GIA","c":"80100736","s":"GADGET","m":"qty","v":[0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0]},{"p":"GIA","c":"80100736","s":"IOT","m":"qty","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"GIA","c":"80100928","s":"ACCESSORIES","m":"qty","v":[1,2,4,0,10,2,2,2,3,1,3,2,3,3,8,7,7,4,3,5,5,4,18,3,4,6,4,0,5,8,4,2,2,6,0,8,7,12,7,8,9,3,8]},{"p":"GIA","c":"80100928","s":"GADGET","m":"qty","v":[2,2,0,3,0,0,1,0,8,0,8,6,8,2,4,2,6,3,1,1,3,3,8,1,2,3,2,7,7,13,2,1,1,1,3,0,3,5,2,0,0,1,5]},{"p":"GIA","c":"80100928","s":"IOT","m":"qty","v":[0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,2,3,0,0,0,0,1,0]},{"p":"GIA","c":"80101679","s":"ACCESSORIES","m":"qty","v":[0,2,1,0,0,0,0,1,2,0,1,1,0,0,0,0,3,0,0,0,1,1,0,0,1,0,0,0,2,0,1,0,0,2,0,0,2,1,0,1,0,2,0]},{"p":"GIA","c":"80101679","s":"GADGET","m":"qty","v":[0,0,0,0,1,0,1,0,1,0,5,0,1,2,3,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2,0,0,0,0,0,1]},{"p":"GIA","c":"80101679","s":"IOT","m":"qty","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"GIA","c":"80100483","s":"ACCESSORIES","m":"net","v":[2789,3458,0,2560,1189,0,3089,4636,6647,0,989,1709,990,2038,3457,1039,0,0,2070,880,1779,4227,1289,199,1912,2369,0,790,5328,698,1190,1538,1238,199,1636,1480,1836,897,2136,209,0,4299,5669]},{"p":"GIA","c":"80100483","s":"GADGET","m":"net","v":[3529,699,0,9689,0,0,0,9004,4269,0,0,1566,0,4201,358,0,358,499,3310,888,0,30025,179,0,22924,179,329,3648,0,6290,590,7480,9290,658,0,6973,0,5091,3589,0,329,290,790]},{"p":"GIA","c":"80100483","s":"IOT","m":"net","v":[1990,0,0,0,0,0,0,0,0,0,0,0,1290,0,1990,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1690,0,0,0,0,0,0,0,0,0,0,0,1290]},{"p":"GIA","c":"80100484","s":"ACCESSORIES","m":"net","v":[6096,20160,5825,2958,5900,5693,18583,9436,14258,6716,8324,9114,3828,7074,11636,5478,6391,1749,8838,4208,7156,10264,20233,6952,1568,9700,15928,5781,6591,10741,8418,4923,9100,2535,9292,11807,15116,4542,3744,5856,18830,16102,15084]},{"p":"GIA","c":"80100484","s":"GADGET","m":"net","v":[17689,70317,16446,2549,7197,15500,34622,17345,31267,16928,21653,28190,2664,57417,55774,59777,299,3788,11279,0,9799,6598,25385,24795,27777,21098,11950,12265,30573,25220,9748,888,21042,19267,562,28035,37210,0,6790,9619,790,19488,20587]},{"p":"GIA","c":"80100484","s":"IOT","m":"net","v":[0,0,0,1290,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1090,0,0,1090,0,0,0,0,0,0,199,0,0,0,0,0,0,0,1990,1690,0]},{"p":"GIA","c":"80100565","s":"ACCESSORIES","m":"net","v":[8536,18532,4585,1137,1787,4278,16222,14892,18629,9786,10883,17153,4808,6884,6774,12426,7368,4898,4208,3204,5444,8908,17439,11904,8020,12285,8960,3875,10267,9516,9063,14369,10429,6180,5847,16121,14464,6327,6076,7193,8123,6916,20539]},{"p":"GIA","c":"80100565","s":"GADGET","m":"net","v":[27397,60243,16230,0,18027,18528,59239,9304,22139,4950,0,16738,45378,11900,4363,19115,39735,4490,9236,11900,6574,15770,14382,30967,9270,3780,0,5980,19164,5780,790,6372,5828,8689,6589,10093,16912,5245,4790,6848,11220,3990,15661]},{"p":"GIA","c":"80100565","s":"IOT","m":"net","v":[0,0,0,0,0,0,1690,1690,0,0,1690,0,0,0,1690,0,0,0,0,0,0,1990,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1198,0,0,0,0,0,0]},{"p":"GIA","c":"80100566","s":"ACCESSORIES","m":"net","v":[1160,549,0,349,2319,459,1815,1099,978,0,2029,0,0,1090,2460,0,0,0,1294,0,0,0,990,0,990,1480,0,0,0,1780,790,490,0,0,0,0,0,0,1139,0,0,1488,0]},{"p":"GIA","c":"80100566","s":"GADGET","m":"net","v":[0,2290,0,0,0,0,6890,0,3490,0,0,0,11550,0,0,0,0,199,0,0,0,31740,0,899,5593,0,0,0,199,0,0,5593,0,0,0,7900,0,0,0,0,0,0,0]},{"p":"GIA","c":"80100566","s":"IOT","m":"net","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"GIA","c":"80100626","s":"ACCESSORIES","m":"net","v":[7480,15063,7703,7691,7056,2417,26214,27245,33004,13875,4635,24944,18088,12005,37467,27958,4820,11698,9167,11077,13090,21805,23863,16307,8149,6439,10625,11832,16345,12898,12747,5737,11835,6375,6035,21699,30270,8793,3019,19339,25802,16788,51706]},{"p":"GIA","c":"80100626","s":"GADGET","m":"net","v":[11432,45040,32869,32180,40670,13280,75479,68417,52622,22919,31040,45595,20168,21137,72306,44209,44721,32257,22978,21568,24646,11158,43869,24098,1080,21498,45016,5784,39001,8578,37994,45381,24519,18650,5980,27713,17548,23233,13770,21528,7948,37281,16989]},{"p":"GIA","c":"80100626","s":"IOT","m":"net","v":[1690,1590,0,1690,0,0,0,0,0,1990,0,1690,1590,0,0,0,3980,0,0,0,1290,0,1990,0,1990,1190,0,0,0,0,0,1290,0,0,0,0,0,0,990,0,1590,0,0]},{"p":"GIA","c":"80100736","s":"ACCESSORIES","m":"net","v":[0,655,179,790,0,0,0,459,0,0,0,0,0,1449,790,0,1039,0,0,0,0,0,0,0,0,790,0,0,0,0,0,0,0,0,0,0,0,0,0,239,0,0,0]},{"p":"GIA","c":"80100736","s":"GADGET","m":"net","v":[0,0,0,0,0,0,0,0,329,0,0,329,0,0,0,0,0,0,888,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,199,0,0,0,0,0]},{"p":"GIA","c":"80100736","s":"IOT","m":"net","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"GIA","c":"80100928","s":"ACCESSORIES","m":"net","v":[149,742,906,0,5186,698,2576,1293,1488,199,1218,1039,1609,1639,5773,3476,3707,2150,1421,2399,2428,1437,7912,1388,2761,2559,2078,0,2768,4475,2219,698,639,2354,0,3815,3606,5293,3816,3467,3298,1870,3256]},{"p":"GIA","c":"80100928","s":"GADGET","m":"net","v":[6990,10530,0,9780,0,0,499,0,12942,0,15526,13254,29404,4698,12488,3809,3725,8603,1188,399,17517,5152,34611,199,4178,7374,2376,28814,33269,55144,798,739,9900,199,9011,0,7418,10906,4818,0,0,5240,2419]},{"p":"GIA","c":"80100928","s":"IOT","m":"net","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1990,0,0,0,1990,0,0,0,0,0,0,0,1090,0]},{"p":"GIA","c":"80101679","s":"ACCESSORIES","m":"net","v":[0,558,670,0,0,0,0,670,989,0,299,299,0,0,0,0,1679,0,0,0,790,259,0,0,790,0,0,0,1380,0,399,0,0,1380,0,0,658,690,0,399,0,1480,0]},{"p":"GIA","c":"80101679","s":"GADGET","m":"net","v":[0,0,0,0,1990,0,2490,0,3490,0,4440,0,888,2076,2664,0,0,0,0,0,0,6500,0,0,0,0,0,0,0,0,0,0,0,0,0,1990,3480,0,0,0,0,0,4490]},{"p":"GIA","c":"80101679","s":"IOT","m":"net","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80100483","s":"HONOR","m":"qty","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0]},{"p":"Device","c":"80100483","s":"HUAWEI","m":"qty","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80100483","s":"INFINIX","m":"qty","v":[1,0,0,1,0,0,1,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80100483","s":"IPAD","m":"qty","v":[1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,2,1,0,0,1,0,0,0,0,0,0,0]},{"p":"Device","c":"80100483","s":"IPHONE","m":"qty","v":[3,3,1,3,0,1,2,7,7,0,2,3,2,2,1,2,0,0,3,2,1,4,1,1,1,0,3,2,3,4,4,1,1,0,2,1,3,0,1,1,6,5,9]},{"p":"Device","c":"80100483","s":"OPPO","m":"qty","v":[1,0,1,1,0,1,0,0,2,1,2,2,0,1,0,1,1,0,0,0,2,1,1,0,1,0,0,0,0,1,0,1,1,2,0,0,3,4,2,0,0,0,1]},{"p":"Device","c":"80100483","s":"REALME","m":"qty","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80100483","s":"SAMSUNG","m":"qty","v":[6,9,0,3,5,1,7,6,3,2,2,3,0,3,8,6,0,6,0,1,2,4,3,1,3,3,2,4,9,2,5,3,2,1,7,4,9,6,5,0,2,5,2]},{"p":"Device","c":"80100483","s":"VIVO","m":"qty","v":[0,2,1,0,2,0,0,0,3,0,1,1,0,0,0,1,0,0,0,0,0,0,1,0,1,1,0,0,0,0,0,3,0,1,0,0,1,1,0,2,0,1,4]},{"p":"Device","c":"80100483","s":"XIAOMI","m":"qty","v":[0,2,0,0,0,2,1,1,1,1,0,2,1,0,0,2,0,0,0,2,1,1,2,0,0,0,1,1,0,0,0,1,2,1,0,0,1,1,0,0,0,0,1]},{"p":"Device","c":"80100484","s":"HONOR","m":"qty","v":[0,1,2,1,0,0,1,1,1,1,0,1,0,0,1,2,4,1,0,1,1,0,1,2,0,0,2,1,0,3,0,1,1,2,1,1,1,2,1,0,1,1,0]},{"p":"Device","c":"80100484","s":"HUAWEI","m":"qty","v":[0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0]},{"p":"Device","c":"80100484","s":"INFINIX","m":"qty","v":[1,2,0,0,1,0,0,1,0,0,0,0,0,0,3,1,0,0,1,0,0,2,1,0,0,0,1,1,0,2,0,0,0,0,0,1,2,0,0,1,0,0,1]},{"p":"Device","c":"80100484","s":"IPAD","m":"qty","v":[1,2,0,1,1,1,2,1,2,0,0,1,1,0,0,3,0,0,0,2,1,1,3,0,1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,1,1,0,1]},{"p":"Device","c":"80100484","s":"IPHONE","m":"qty","v":[4,10,1,2,5,2,3,8,11,7,5,12,5,6,11,5,7,4,8,2,3,9,10,4,3,5,5,5,6,10,8,1,7,3,9,12,9,4,2,7,22,18,15]},{"p":"Device","c":"80100484","s":"NOTHING","m":"qty","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80100484","s":"OPPO","m":"qty","v":[1,5,2,2,2,1,2,6,6,1,1,2,3,3,2,4,1,0,3,1,4,3,6,0,1,1,2,1,2,6,1,1,1,2,2,5,3,1,0,0,0,3,3]},{"p":"Device","c":"80100484","s":"REALME","m":"qty","v":[0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0]},{"p":"Device","c":"80100484","s":"SAMSUNG","m":"qty","v":[7,15,7,3,7,2,14,10,14,9,8,10,5,4,7,4,5,5,5,5,3,17,21,10,11,5,4,6,8,11,11,7,4,12,5,10,20,9,3,8,10,8,16]},{"p":"Device","c":"80100484","s":"VIVO","m":"qty","v":[2,2,3,1,1,0,1,2,5,2,1,1,2,1,1,2,2,0,1,0,1,2,3,1,1,1,3,1,1,2,1,0,1,2,1,4,1,1,3,0,0,0,3]},{"p":"Device","c":"80100484","s":"XIAOMI","m":"qty","v":[1,2,1,1,0,0,0,4,3,1,1,2,3,2,1,4,4,6,2,0,2,1,3,1,0,1,1,1,1,1,1,1,1,0,0,8,2,2,3,0,0,2,1]},{"p":"Device","c":"80100565","s":"HONOR","m":"qty","v":[2,2,2,0,0,1,0,3,1,2,0,2,1,0,0,3,0,0,0,1,2,0,1,0,2,0,0,1,0,0,1,1,0,2,0,0,0,0,1,0,1,0,0]},{"p":"Device","c":"80100565","s":"HUAWEI","m":"qty","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80100565","s":"INFINIX","m":"qty","v":[0,1,0,0,1,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,1,0,0,0,1,0,1,0,0,1,0,0,0]},{"p":"Device","c":"80100565","s":"IPAD","m":"qty","v":[3,3,2,0,1,1,0,2,0,1,0,1,1,1,0,2,0,1,0,0,0,0,1,0,0,1,0,2,0,0,0,0,1,0,1,2,0,0,0,0,2,0,1]},{"p":"Device","c":"80100565","s":"IPHONE","m":"qty","v":[3,7,3,1,4,4,5,17,13,7,7,12,4,6,8,3,5,2,7,4,5,13,16,6,6,7,6,5,6,14,4,4,6,6,2,10,8,5,5,5,13,4,22]},{"p":"Device","c":"80100565","s":"OPPO","m":"qty","v":[1,2,1,0,3,0,1,4,6,0,1,2,2,1,0,4,4,0,0,0,0,2,1,2,0,2,0,0,1,1,1,0,1,1,1,2,3,1,2,1,1,1,1]},{"p":"Device","c":"80100565","s":"REALME","m":"qty","v":[0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80100565","s":"SAMSUNG","m":"qty","v":[5,7,7,1,2,6,20,15,12,9,9,8,6,6,10,11,2,5,2,5,6,10,9,6,5,6,2,4,8,8,5,6,8,9,13,4,13,10,4,6,4,5,12]},{"p":"Device","c":"80100565","s":"VIVO","m":"qty","v":[1,3,1,1,0,0,1,0,3,1,0,2,1,0,1,1,2,0,1,0,1,1,0,0,0,1,0,1,0,2,2,1,1,0,1,2,3,2,0,1,1,0,2]},{"p":"Device","c":"80100565","s":"XIAOMI","m":"qty","v":[0,3,0,0,2,1,0,2,1,0,0,2,1,0,1,2,4,0,2,1,1,2,1,3,1,1,0,0,2,1,0,0,2,0,1,1,2,2,2,0,2,0,1]},{"p":"Device","c":"80100566","s":"HONOR","m":"qty","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80100566","s":"HUAWEI","m":"qty","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80100566","s":"INFINIX","m":"qty","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80100566","s":"IPAD","m":"qty","v":[0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80100566","s":"IPHONE","m":"qty","v":[2,0,0,0,0,0,1,3,2,1,1,1,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,1,0,2,1,0,0,0,0,2,2,0,0,0,0,1,2]},{"p":"Device","c":"80100566","s":"OPPO","m":"qty","v":[0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,2,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80100566","s":"REALME","m":"qty","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80100566","s":"SAMSUNG","m":"qty","v":[4,7,2,1,1,4,3,4,3,0,0,5,5,2,8,5,0,0,3,1,4,3,7,1,2,3,2,1,3,5,1,3,1,0,6,7,4,3,2,1,2,3,4]},{"p":"Device","c":"80100566","s":"VIVO","m":"qty","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80100566","s":"XIAOMI","m":"qty","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,2,0,0,0,0]},{"p":"Device","c":"80100626","s":"ALLDOCUBE","m":"qty","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80100626","s":"HONOR","m":"qty","v":[0,0,0,0,2,1,0,1,3,0,0,1,0,1,1,2,1,0,1,5,0,1,2,0,0,0,1,0,3,2,4,0,0,0,0,2,0,1,0,0,2,1,0]},{"p":"Device","c":"80100626","s":"HUAWEI","m":"qty","v":[0,2,0,1,0,0,0,0,0,0,0,0,0,2,0,0,0,0,1,1,1,1,0,0,0,2,0,0,0,0,1,0,0,0,1,1,0,0,0,0,0,0,1]},{"p":"Device","c":"80100626","s":"INFINIX","m":"qty","v":[0,1,0,0,0,1,0,0,0,0,1,0,2,2,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80100626","s":"IPAD","m":"qty","v":[1,1,2,0,2,0,2,2,5,1,2,0,1,1,0,2,1,1,0,0,1,1,0,1,1,0,1,0,2,0,1,0,3,2,2,3,0,1,2,2,0,1,1]},{"p":"Device","c":"80100626","s":"IPHONE","m":"qty","v":[6,11,6,5,9,2,4,22,18,11,6,14,11,13,18,18,10,11,8,12,12,22,16,9,3,5,9,7,16,18,12,5,5,5,7,11,18,8,4,9,36,36,48]},{"p":"Device","c":"80100626","s":"OPPO","m":"qty","v":[2,1,1,0,1,0,4,1,4,0,0,3,1,0,2,1,2,2,0,3,1,2,3,1,1,2,0,1,1,2,3,2,4,3,0,3,3,3,1,1,1,0,3]},{"p":"Device","c":"80100626","s":"REALME","m":"qty","v":[0,3,1,0,1,0,1,1,3,1,1,1,0,1,1,0,1,0,1,1,0,0,0,2,1,1,1,0,0,2,1,0,1,0,1,1,0,1,1,0,2,2,0]},{"p":"Device","c":"80100626","s":"SAMSUNG","m":"qty","v":[10,18,15,8,5,9,26,19,10,9,5,17,8,4,11,14,1,9,5,6,9,13,13,8,11,11,6,9,9,10,9,3,11,16,13,10,23,5,5,12,11,7,13]},{"p":"Device","c":"80100626","s":"VIVO","m":"qty","v":[1,4,1,3,3,0,0,3,2,2,0,3,2,2,2,2,0,1,4,1,2,0,4,1,2,3,3,3,1,3,2,1,0,2,0,2,2,1,1,3,0,1,3]},{"p":"Device","c":"80100626","s":"XIAOMI","m":"qty","v":[3,1,1,2,0,0,0,0,0,0,1,1,0,3,3,1,0,1,1,0,2,0,1,0,1,0,0,1,0,1,1,1,2,1,2,2,2,3,0,0,0,0,3]},{"p":"Device","c":"80100736","s":"HONOR","m":"qty","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0]},{"p":"Device","c":"80100736","s":"HUAWEI","m":"qty","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80100736","s":"INFINIX","m":"qty","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80100736","s":"IPAD","m":"qty","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80100736","s":"IPHONE","m":"qty","v":[3,1,0,1,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,1,0]},{"p":"Device","c":"80100736","s":"OPPO","m":"qty","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80100736","s":"REALME","m":"qty","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80100736","s":"SAMSUNG","m":"qty","v":[0,1,0,0,1,2,0,3,0,0,1,0,1,1,4,0,0,0,1,0,1,0,0,0,0,1,0,1,0,1,2,0,1,0,0,1,0,0,0,1,0,0,0]},{"p":"Device","c":"80100736","s":"VIVO","m":"qty","v":[0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0]},{"p":"Device","c":"80100736","s":"XIAOMI","m":"qty","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80100928","s":"HONOR","m":"qty","v":[0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,2,1,1,0,0,0,2,1,0,1,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0]},{"p":"Device","c":"80100928","s":"HUAWEI","m":"qty","v":[1,0,1,0,0,0,0,0,0,0,0,1,0,3,1,4,2,0,0,1,1,0,3,0,0,0,0,0,1,1,0,0,0,1,0,1,0,0,1,0,1,0,1]},{"p":"Device","c":"80100928","s":"INFINIX","m":"qty","v":[1,0,1,1,0,0,0,0,0,0,1,0,0,1,0,0,0,2,0,0,0,0,0,1,0,0,0,0,1,0,0,1,0,0,0,1,0,0,2,0,1,0,0]},{"p":"Device","c":"80100928","s":"IPAD","m":"qty","v":[0,0,0,0,0,0,0,0,3,0,0,1,0,0,1,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0]},{"p":"Device","c":"80100928","s":"IPHONE","m":"qty","v":[2,3,1,0,3,1,4,4,3,2,1,7,4,1,2,1,6,1,5,3,3,1,5,1,1,4,4,2,6,5,4,0,0,1,0,3,8,4,2,5,6,3,5]},{"p":"Device","c":"80100928","s":"OPPO","m":"qty","v":[1,3,0,1,1,1,1,3,1,1,0,0,0,1,2,0,0,1,2,1,0,2,2,0,0,0,1,0,2,0,0,0,0,0,0,2,0,1,1,1,1,1,4]},{"p":"Device","c":"80100928","s":"REALME","m":"qty","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80100928","s":"SAMSUNG","m":"qty","v":[4,6,5,2,4,1,6,10,6,2,3,1,3,5,5,6,2,3,2,3,7,11,6,2,6,0,1,7,6,10,7,4,4,8,6,4,8,10,7,4,3,6,4]},{"p":"Device","c":"80100928","s":"VIVO","m":"qty","v":[1,2,0,1,2,1,1,2,2,0,3,2,2,1,2,2,0,1,2,0,2,2,3,0,0,1,0,2,3,5,1,1,0,2,0,3,3,0,3,1,3,1,2]},{"p":"Device","c":"80100928","s":"XIAOMI","m":"qty","v":[1,0,0,0,2,0,0,3,4,0,0,3,3,0,1,1,4,1,0,0,0,2,0,1,0,1,0,1,0,2,1,1,0,2,1,1,0,1,1,3,3,1,1]},{"p":"Device","c":"80101679","s":"HONOR","m":"qty","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80101679","s":"HUAWEI","m":"qty","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80101679","s":"INFINIX","m":"qty","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80101679","s":"IPAD","m":"qty","v":[0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]},{"p":"Device","c":"80101679","s":"IPHONE","m":"qty","v":[1,1,1,0,0,0,2,1,1,1,0,1,0,0,1,1,4,0,0,0,1,1,1,0,2,0,1,0,1,1,1,0,0,0,1,2,1,1,1,2,2,1,1]},{"p":"Device","c":"80101679","s":"OPPO","m":"qty","v":[0,2,0,0,1,1,0,1,0,0,0,1,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,1,2,0,0,0,0,0,0,1,0,0,0,0,0,0,0]},{"p":"Device","c":"80101679","s":"REALME","m":"qty","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80101679","s":"SAMSUNG","m":"qty","v":[0,2,1,0,0,1,1,1,4,2,3,2,1,0,3,2,0,0,1,0,2,0,2,0,0,0,1,1,3,5,4,0,1,4,4,4,4,2,0,3,1,3,1]},{"p":"Device","c":"80101679","s":"VIVO","m":"qty","v":[1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0]},{"p":"Device","c":"80101679","s":"XIAOMI","m":"qty","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,1,1,1,0,2,1,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80100483","s":"HONOR","m":"net","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1599,3299,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4299,0,0,0,0]},{"p":"Device","c":"80100483","s":"HUAWEI","m":"net","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80100483","s":"INFINIX","m":"net","v":[4799,0,0,1399,0,0,3599,0,0,0,0,0,13799,0,3899,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1149,0,15999,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80100483","s":"IPAD","m":"net","v":[12600,0,0,0,0,0,0,0,0,0,0,17900,0,0,0,0,0,17400,0,0,0,0,0,0,0,0,0,0,16900,0,0,44600,19000,0,0,16900,0,0,0,0,0,0,0]},{"p":"Device","c":"80100483","s":"IPHONE","m":"net","v":[97140,97340,40370,123310,0,36280,57380,270260,281160,0,81160,126740,89460,61880,37280,76660,0,0,112640,77160,40380,127960,28900,37280,39280,0,105960,62580,97960,129160,134360,25300,37280,0,71260,25300,122640,0,44980,29900,220400,179800,309380]},{"p":"Device","c":"80100483","s":"OPPO","m":"net","v":[8499,0,12099,13299,0,3099,0,0,16098,15999,9398,11598,0,16999,0,8499,22999,0,0,0,17698,4699,12999,0,12999,0,0,0,0,1199,0,5499,11799,15198,0,0,38497,70996,25998,0,0,0,15999]},{"p":"Device","c":"80100483","s":"REALME","m":"net","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80100483","s":"SAMSUNG","m":"net","v":[90446,108323,0,36498,18386,7299,37243,111247,22598,598,8789,9827,0,60759,31093,47424,0,23494,0,299,56859,70857,25738,1399,94659,13597,20489,68089,80383,14298,18583,25597,14148,299,54544,75999,83492,29386,30192,0,3598,32765,8468]},{"p":"Device","c":"80100483","s":"VIVO","m":"net","v":[0,16898,22799,0,14548,0,0,0,11797,0,1299,15599,0,0,0,13399,0,0,0,0,0,0,7099,0,16499,4499,0,0,0,0,0,15747,0,17999,0,0,15599,5249,0,14298,0,3899,75746]},{"p":"Device","c":"80100483","s":"XIAOMI","m":"net","v":[0,1598,0,0,0,22198,3499,3499,799,4999,0,1598,3499,0,0,10489,0,0,0,5098,12690,7099,19698,0,0,0,9690,6699,0,0,0,12090,20989,22799,0,0,16964,11799,0,0,0,0,2099]},{"p":"Device","c":"80100484","s":"HONOR","m":"net","v":[0,2499,6998,3099,0,0,2499,3249,3499,5499,0,9599,0,0,3449,3198,34096,3499,0,1599,1599,0,8999,5998,0,0,24398,52099,0,7897,0,8899,2799,18098,11699,5999,1599,7098,2099,0,2949,40990,0]},{"p":"Device","c":"80100484","s":"HUAWEI","m":"net","v":[0,0,0,0,0,0,0,0,9190,0,0,0,0,0,0,25290,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,12990,0,0,0,0,0]},{"p":"Device","c":"80100484","s":"INFINIX","m":"net","v":[1399,3098,0,0,3999,0,0,7299,0,0,0,0,0,0,14997,5999,0,0,1349,0,0,2048,799,0,0,0,1199,3999,0,9698,0,0,0,0,0,1149,7998,0,0,3999,0,0,4699]},{"p":"Device","c":"80100484","s":"IPAD","m":"net","v":[18400,28600,0,24700,24200,20000,47300,23900,52200,0,0,24700,26200,0,0,80600,0,0,0,47100,14400,17400,64800,0,14400,0,12600,0,20400,0,0,0,0,0,0,0,0,0,0,31900,25200,0,26900]},{"p":"Device","c":"80100484","s":"IPHONE","m":"net","v":[147320,366010,36970,63170,201770,87760,107440,320960,426200,266180,177200,438100,184120,236280,315920,175920,238540,130360,217860,65580,94960,364820,440700,158020,122840,153460,141160,210200,213140,291240,275400,39880,220760,110260,343640,390060,248960,139160,72060,241000,727840,582600,528080]},{"p":"Device","c":"80100484","s":"NOTHING","m":"net","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,14999,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80100484","s":"OPPO","m":"net","v":[1999,59560,24798,12398,19398,15999,5098,29794,35394,17599,1299,12598,31547,7747,9398,13696,12499,0,24797,1749,26146,17947,75694,0,1299,699,27498,13199,26998,31394,14299,699,17999,61798,4898,16195,7097,20999,0,0,0,32197,39697]},{"p":"Device","c":"80100484","s":"REALME","m":"net","v":[0,3999,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5598,0,0,0,0]},{"p":"Device","c":"80100484","s":"SAMSUNG","m":"net","v":[71794,114617,83986,6927,68585,33099,488038,252196,127199,45883,103555,94383,14695,23126,153138,52997,45326,36286,88517,100048,112020,159196,154782,49691,87491,21186,85299,51695,21392,121002,73481,54394,106524,95222,6165,129043,172084,14991,1197,33733,128153,58575,149687]},{"p":"Device","c":"80100484","s":"VIVO","m":"net","v":[3498,52198,17847,22299,1299,0,18499,15998,47145,4548,1299,3449,16748,4699,2249,4998,21198,0,13299,0,4799,18548,13947,16499,1299,3349,9297,7099,16499,7448,4699,0,2849,19448,5399,14946,3349,6499,16297,0,0,0,15747]},{"p":"Device","c":"80100484","s":"XIAOMI","m":"net","v":[799,53180,799,799,0,0,0,8496,27197,3499,799,7489,11597,7998,7690,20896,16587,9994,13489,0,1598,799,11597,3599,0,7890,799,21499,4299,27990,7299,5499,7499,0,0,45683,31763,7398,11097,0,0,22989,3699]},{"p":"Device","c":"80100565","s":"HONOR","m":"net","v":[22498,29198,7848,0,0,10299,0,27147,12699,22498,0,13648,28799,0,0,18697,0,0,0,11399,7898,0,12699,0,21198,0,0,2449,0,0,8899,14764,0,21998,0,0,0,0,2749,0,5699,0,0]},{"p":"Device","c":"80100565","s":"HUAWEI","m":"net","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80100565","s":"INFINIX","m":"net","v":[0,1699,0,0,9599,0,0,0,0,0,0,12697,0,0,0,0,0,0,0,0,0,0,0,1199,0,0,0,0,3999,0,7299,0,0,0,7499,0,7499,0,0,3799,0,0,0]},{"p":"Device","c":"80100565","s":"IPAD","m":"net","v":[48200,61200,52400,0,26700,27500,0,34700,0,13200,0,20100,17700,23700,0,39900,0,27900,0,0,0,0,12600,0,0,12700,0,37100,0,0,0,0,17200,0,24700,48500,0,0,0,0,50100,0,31400]},{"p":"Device","c":"80100565","s":"IPHONE","m":"net","v":[106980,223530,93840,22700,168390,155120,179920,576260,491740,273160,310360,429500,133740,221080,288980,119040,162060,69280,266360,152420,183020,409660,587740,244580,243080,257100,196440,185300,226080,515880,133740,126740,207420,169640,59680,333650,318140,187800,178920,165340,390120,151620,770500]},{"p":"Device","c":"80100565","s":"OPPO","m":"net","v":[2899,17298,4699,0,28097,0,8399,56196,90594,0,5699,23698,25698,1799,0,33596,41196,0,0,0,0,31198,13299,12198,0,22098,0,0,1699,17999,14499,0,2099,5499,1199,21698,44762,19999,25698,20599,8499,18499,15999]},{"p":"Device","c":"80100565","s":"REALME","m":"net","v":[0,0,0,0,0,0,0,0,3999,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80100565","s":"SAMSUNG","m":"net","v":[120489,121818,15943,3299,33449,41825,841157,211500,203652,64283,76422,60013,82356,150058,126522,258075,52929,69447,19298,38446,155317,80792,76863,50195,57496,60356,55559,11696,106345,98285,19892,50592,42563,147991,81520,35879,151088,37272,63998,74746,19293,84107,191835]},{"p":"Device","c":"80100565","s":"VIVO","m":"net","v":[16499,41697,10099,3399,0,0,49999,0,31597,2199,0,30298,16299,0,18999,16999,36498,0,5299,0,13799,12499,0,0,0,47499,0,49999,0,7948,24098,11999,16599,0,949,24298,22747,10648,0,15799,18799,0,19448]},{"p":"Device","c":"80100565","s":"XIAOMI","m":"net","v":[0,17097,0,0,14880,23399,0,6098,3499,0,0,10489,4999,0,4999,6998,17096,0,4098,1699,13490,31589,11690,8297,799,39990,0,0,26798,799,0,0,1598,0,1999,2699,20263,34498,29463,0,6698,0,7299]},{"p":"Device","c":"80100566","s":"HONOR","m":"net","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80100566","s":"HUAWEI","m":"net","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80100566","s":"INFINIX","m":"net","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3299,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80100566","s":"IPAD","m":"net","v":[0,0,0,0,13700,0,0,0,0,0,0,0,11200,0,0,0,0,0,0,0,0,0,0,16900,0,0,0,0,0,0,0,0,22000,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80100566","s":"IPHONE","m":"net","v":[32800,0,0,0,0,0,38780,116640,72160,39280,37280,39880,0,0,0,0,0,0,35780,0,0,0,32280,0,0,0,0,40380,0,68480,25800,0,0,0,0,61680,78160,0,0,0,0,44980,54280]},{"p":"Device","c":"80100566","s":"OPPO","m":"net","v":[0,13499,0,0,0,0,0,0,10199,0,0,0,0,0,0,0,0,0,0,0,0,14898,12499,0,0,0,0,0,0,2899,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80100566","s":"REALME","m":"net","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80100566","s":"SAMSUNG","m":"net","v":[68197,67224,3598,299,30600,27896,144880,119718,49948,0,0,86647,47196,24199,192458,44196,0,0,78559,16999,109249,49348,66085,299,36199,67889,31799,299,43668,84638,15999,62866,29000,0,22094,46694,58097,41139,598,8999,78760,38698,44243]},{"p":"Device","c":"80100566","s":"VIVO","m":"net","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,14099,0,1299,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80100566","s":"XIAOMI","m":"net","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,799,0,0,0,0,0,799,0,799,0,0,0,0,0,0,0,0,0,7398,0,0,0,0]},{"p":"Device","c":"80100626","s":"ALLDOCUBE","m":"net","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4990,0,0,0,5990,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80100626","s":"HONOR","m":"net","v":[0,0,0,0,7248,3499,0,14999,10497,0,0,1799,0,10799,3499,19048,3499,0,2299,17245,0,3249,12298,0,0,0,4499,0,9897,6948,74156,0,0,0,0,45789,0,40990,0,0,18798,15999,0]},{"p":"Device","c":"80100626","s":"HUAWEI","m":"net","v":[0,33480,0,18090,0,0,0,0,0,0,0,0,0,54780,0,0,0,0,6490,29990,39490,21690,0,0,0,28780,0,0,0,0,19990,0,0,0,15490,15990,0,0,0,0,0,0,6490]},{"p":"Device","c":"80100626","s":"INFINIX","m":"net","v":[0,3499,0,0,0,3599,0,0,0,0,4999,0,20498,11998,0,0,7299,0,0,0,0,0,0,0,0,0,0,0,0,0,0,11199,0,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80100626","s":"IPAD","m":"net","v":[20900,32200,52900,0,33800,0,46100,55200,74600,25700,50400,0,20900,18400,0,37900,24000,26200,0,0,19900,24700,0,22600,17700,0,14400,0,40400,0,22000,0,75100,59200,40200,62800,0,22700,39800,46900,0,19000,15200]},{"p":"Device","c":"80100626","s":"IPHONE","m":"net","v":[159640,364510,190120,177020,344260,64780,141440,758020,635320,392220,229190,520960,387980,498080,632240,622280,336980,365700,249720,404360,411810,775800,513560,277520,138860,214200,330380,258520,582760,652940,418860,192320,164740,154740,237120,382660,568420,263700,127760,311480,1153940,1211080,1687460]},{"p":"Device","c":"80100626","s":"OPPO","m":"net","v":[15098,12999,5620,0,15999,0,37196,37299,51696,0,0,39798,23499,0,17379,15999,28298,17298,0,8178,12999,10279,32078,11799,5699,12998,0,12199,13999,23698,39997,18998,15296,8997,0,10097,24978,29997,2199,199,15999,0,29397]},{"p":"Device","c":"80100626","s":"REALME","m":"net","v":[0,21008,5299,0,2610,0,5699,1499,11408,3699,6299,2899,0,5299,6899,0,8299,0,20899,6999,0,0,0,18098,5299,2799,2399,0,0,11498,18799,0,2799,0,1999,6899,0,7799,1499,0,9298,15598,0]},{"p":"Device","c":"80100626","s":"SAMSUNG","m":"net","v":[105042,135726,106986,46093,47395,41791,977335,467730,119193,97053,41496,175888,74416,19537,269306,145134,299,137755,77893,127587,149945,170376,86880,161059,125111,46478,56157,144376,143956,217587,28783,22028,236044,138271,87236,131194,232904,57596,33096,69141,115778,92295,252895]},{"p":"Device","c":"80100626","s":"VIVO","m":"net","v":[13599,32147,11599,24148,19248,0,0,33697,21949,19660,0,28197,55949,11199,8149,24948,0,13299,25057,5950,34598,0,28348,4199,25798,41197,27348,41097,5950,27999,22059,6960,0,17248,0,11900,22449,16499,16499,83048,0,18499,33147]},{"p":"Device","c":"80100626","s":"XIAOMI","m":"net","v":[7097,13990,3499,10139,0,0,0,0,0,0,18499,5999,0,23297,36947,11690,0,39490,799,0,9889,0,14290,0,4999,0,0,3699,0,2599,1699,3699,4498,7099,32198,20263,39489,21997,0,0,0,0,19397]},{"p":"Device","c":"80100736","s":"HONOR","m":"net","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8998,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1599,0,0]},{"p":"Device","c":"80100736","s":"HUAWEI","m":"net","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80100736","s":"INFINIX","m":"net","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80100736","s":"IPAD","m":"net","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80100736","s":"IPHONE","m":"net","v":[69300,38370,0,23500,0,0,40880,0,0,0,0,0,0,0,0,0,44280,0,0,0,0,0,17900,0,0,0,0,0,41380,0,0,0,0,0,0,0,0,0,40880,0,0,38780,0]},{"p":"Device","c":"80100736","s":"OPPO","m":"net","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8499,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80100736","s":"REALME","m":"net","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2399,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80100736","s":"SAMSUNG","m":"net","v":[0,699,0,0,99,14998,0,32728,0,0,3299,0,99,30400,196,0,0,0,999,0,99,0,0,0,0,-401,0,999,0,99,14298,0,99,0,0,99,0,0,0,3299,0,0,0]},{"p":"Device","c":"80100736","s":"VIVO","m":"net","v":[0,0,0,0,0,0,0,0,0,0,0,4499,0,0,0,0,0,0,4999,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,949,0,0,0,0,0]},{"p":"Device","c":"80100736","s":"XIAOMI","m":"net","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,299,0,0,0,7398,3699,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80100928","s":"HONOR","m":"net","v":[0,0,0,0,0,0,0,0,0,13999,0,0,15499,0,0,3398,1599,1599,0,0,0,3198,1599,0,1599,0,0,0,0,0,0,11399,0,0,0,0,0,4299,0,0,0,0,0]},{"p":"Device","c":"80100928","s":"HUAWEI","m":"net","v":[9890,0,18090,0,0,0,0,0,0,0,0,12490,0,77870,28490,71260,54580,0,0,28990,39490,0,82770,0,0,0,0,0,21490,18490,0,0,0,9190,0,31990,0,0,39490,0,28490,0,28490]},{"p":"Device","c":"80100928","s":"INFINIX","m":"net","v":[3199,0,8499,13699,0,0,0,0,0,0,4999,0,0,11199,0,0,0,14398,0,0,0,0,0,4599,0,0,0,0,3999,0,0,5699,0,0,0,7499,0,0,16998,0,5599,0,0]},{"p":"Device","c":"80100928","s":"IPAD","m":"net","v":[0,0,0,0,0,0,0,0,49700,0,0,25500,0,0,25500,0,0,0,0,0,0,0,19900,0,24700,0,0,0,0,0,0,0,0,0,0,0,0,13900,0,0,0,0,0]},{"p":"Device","c":"80100928","s":"IPHONE","m":"net","v":[68640,113510,23500,0,116050,34280,161120,132340,138840,69680,44980,270480,148320,40880,81760,40380,220420,38780,143760,124640,120840,44980,199000,51980,48880,172820,152710,47400,226920,171540,134360,0,0,43980,0,118540,295380,147440,74860,202600,191840,105040,153880]},{"p":"Device","c":"80100928","s":"OPPO","m":"net","v":[22999,30197,0,4699,13999,4699,13999,32197,4699,17999,0,0,0,1299,25498,0,0,12499,18198,5699,0,3548,28298,0,0,0,4699,0,21698,0,0,0,0,0,0,8098,0,10199,16299,4699,12999,11999,33996]},{"p":"Device","c":"80100928","s":"REALME","m":"net","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80100928","s":"SAMSUNG","m":"net","v":[59438,26794,25096,598,58298,23900,126577,232696,52386,598,18597,3299,36798,19375,32756,50795,598,54998,24598,114280,160777,139209,58146,598,1794,0,3299,2993,13585,162835,23784,66698,96039,24042,10985,45488,89245,48172,6763,23396,6897,12094,22797]},{"p":"Device","c":"80100928","s":"VIVO","m":"net","v":[17799,29898,0,4499,7498,2949,19999,20448,10798,0,62497,7698,5798,4499,59998,3548,0,2949,34998,0,7498,9798,23947,0,0,12899,0,17948,28547,25845,16999,5299,0,8648,0,16497,26197,0,29997,2449,30947,949,3898]},{"p":"Device","c":"80100928","s":"XIAOMI","m":"net","v":[799,0,0,0,26498,0,0,30297,27287,0,0,2397,9997,0,799,39990,45569,3499,0,0,0,18489,0,29090,0,3599,0,2499,0,32589,1299,27999,0,9789,3699,1499,0,10699,3699,11097,24397,6999,3699]},{"p":"Device","c":"80101679","s":"HONOR","m":"net","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1599,0,2499,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80101679","s":"HUAWEI","m":"net","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80101679","s":"INFINIX","m":"net","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8399,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80101679","s":"IPAD","m":"net","v":[0,0,0,0,0,0,0,0,14400,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,24100]},{"p":"Device","c":"80101679","s":"IPHONE","m":"net","v":[24200,20600,23500,0,0,0,74860,19000,39280,37280,0,22500,0,0,39380,19500,178020,0,0,0,39480,25300,22700,0,65980,0,40380,0,36280,32280,20200,0,0,0,38780,64480,40580,23200,24200,72560,75260,29900,35880]},{"p":"Device","c":"80101679","s":"OPPO","m":"net","v":[0,14548,0,0,13299,29999,0,13499,0,0,0,29999,0,0,15999,0,0,23999,0,0,0,0,0,0,0,0,0,3399,19098,0,0,0,0,0,0,14799,0,0,0,0,0,0,0]},{"p":"Device","c":"80101679","s":"REALME","m":"net","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]},{"p":"Device","c":"80101679","s":"SAMSUNG","m":"net","v":[0,1198,299,0,0,33150,299,12990,21926,3598,6997,11398,5029,0,53458,44199,0,0,3299,0,11598,0,7886,0,0,0,14999,3999,5267,29753,61094,0,23900,41397,3796,57068,35388,4295,0,5897,10490,36698,299]},{"p":"Device","c":"80101679","s":"VIVO","m":"net","v":[5099,0,0,2399,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2849,0,0,0,0,0,0,0,0,4099,0]},{"p":"Device","c":"80101679","s":"XIAOMI","m":"net","v":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,799,0,799,0,0,0,0,799,799,1199,0,1598,299,0,0,0,0,0,0,0,0,0,0,0,0]}]};
+
+/* ============ CONFIG ============ */
+const PRODUCTS = [
+  { key:'Postpaid',    label:'Postpaid',    metrics:[{k:'qty',label:'QTY',kind:'qty'},{k:'net',label:'Revenue',kind:'money'}], sub:null },
+  { key:'True Online', label:'True Online', metrics:[{k:'connect',label:'Connect',kind:'qty'},{k:'register',label:'Register',kind:'qty'}], sub:null },
+  { key:'GIA',         label:'GIA',         metrics:[{k:'qty',label:'QTY',kind:'qty'},{k:'net',label:'Revenue',kind:'money'}], sub:'Type' },
+  { key:'Device',      label:'Device',      metrics:[{k:'qty',label:'QTY',kind:'qty'},{k:'net',label:'Revenue',kind:'money'}], sub:'Brand' },
+];
+const TYPE_ORDER = ['Matching','Non Matching','COCO'];
+const TH_MON = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+const TH_DOW = ['อา.','จ.','อ.','พ.','พฤ.','ศ.','ส.'];
+
+const state = { product:'Postpaid', metric:'qty', sub:'__ALL__', shops:null, sortKey:'w1', sortDir:-1 };
+let WIN = null; // {w1:[idx], w0:[idx], mm:[idx], labels:{}}
+
+/* ============ HELPERS ============ */
+const $ = id => document.getElementById(id);
+const prodCfg = k => PRODUCTS.find(p => p.key === k);
+
+function fmtDateTH(s, withYear){
+  if(!s) return '—';
+  const [y,m,d] = s.split('-').map(Number);
+  return d + ' ' + TH_MON[m-1] + (withYear ? ' ' + y : '');
+}
+function fmtRange(a, b){
+  if(!a || !b) return '—';
+  const [ya,ma] = a.split('-').map(Number), [yb,mb] = b.split('-').map(Number);
+  if(ya===yb && ma===mb) return a.split('-')[2]*1 + '–' + fmtDateTH(b,true);
+  return fmtDateTH(a,false) + ' – ' + fmtDateTH(b,true);
+}
+function dowLabel(s){
+  const [y,m,d] = s.split('-').map(Number);
+  return TH_DOW[new Date(Date.UTC(y,m-1,d)).getUTCDay()];
+}
+function minusMonth(s){
+  let [y,m,d] = s.split('-').map(Number);
+  m -= 1; if(m === 0){ m = 12; y -= 1; }
+  const last = new Date(Date.UTC(y, m, 0)).getUTCDate();
+  if(d > last) d = last;
+  return y + '-' + String(m).padStart(2,'0') + '-' + String(d).padStart(2,'0');
+}
+function isMoney(){ const m = prodCfg(state.product).metrics.find(x => x.k === state.metric); return m && m.kind === 'money'; }
+function nf(v){ return Math.round(v).toLocaleString('en-US'); }
+function fmtVal(v, money){
+  if(money) return '฿' + nf(v);
+  return nf(v);
+}
+function fmtCompact(v, money){
+  const a = Math.abs(v);
+  if(money){
+    if(a >= 1e6) return '฿' + (v/1e6).toFixed(2) + 'M';
+    if(a >= 1e3) return '฿' + (v/1e3).toFixed(1) + 'K';
+    return '฿' + nf(v);
+  }
+  return nf(v);
+}
+function signed(v, money){ return (v > 0 ? '+' : v < 0 ? '−' : '') + fmtCompact(Math.abs(v), money); }
+function signedFull(v, money){ return (v > 0 ? '+' : v < 0 ? '−' : '') + fmtVal(Math.abs(v), money); }
+function pctStr(cur, base){
+  if(!base) return cur > 0 ? 'ใหม่' : '—';
+  const p = (cur - base) / Math.abs(base) * 100;
+  return (p > 0 ? '+' : p < 0 ? '−' : '') + Math.abs(p).toFixed(1) + '%';
+}
+function dirClass(cur, base){
+  const d = cur - base;
+  return d > 0 ? 'up' : d < 0 ? 'down' : 'flat';
+}
+function arrow(cur, base){ const d = cur - base; return d > 0 ? '▲' : d < 0 ? '▼' : '—'; }
+
+/* ============ WINDOWS ============ */
+function computeWindows(){
+  const dates = DATA.dates, n = dates.length;
+  const idx = {}; dates.forEach((d,i) => idx[d] = i);
+  const w1 = [], w0 = [], mm = [];
+  for(let i = Math.max(0, n-7); i < n; i++) w1.push(i);
+  for(let i = Math.max(0, n-14); i < n-7; i++) w0.push(i);
+  const mmDates = w1.map(i => minusMonth(dates[i]));
+  mmDates.forEach(d => mm.push(d in idx ? idx[d] : -1));
+  WIN = {
+    w1, w0, mm, mmDates,
+    lblW1: fmtRange(dates[w1[0]], dates[w1[w1.length-1]]),
+    lblW0: w0.length ? fmtRange(dates[w0[0]], dates[w0[w0.length-1]]) : '—',
+    lblMM: fmtRange(mmDates[0], mmDates[mmDates.length-1]),
+    mmOk: mm.every(i => i >= 0),
+    asof: dates[n-1],
+  };
+}
+
+/* ============ AGGREGATION ============ */
+function activeShops(){
+  if(!state.shops || !state.shops.size) return DATA.shops;
+  return DATA.shops.filter(s => state.shops.has(s.code));
+}
+function shopSelected(code){ return !state.shops || !state.shops.size || state.shops.has(code); }
+function matchRows(f){
+  return DATA.rows.filter(r =>
+    r.p === state.product &&
+    r.m === state.metric &&
+    (!f.sub || f.sub === '__ALL__' || r.s === f.sub) &&
+    (f.code ? r.c === f.code : shopSelected(r.c)) &&
+    (!f.type || (DATA.shopMap[r.c] && DATA.shopMap[r.c].type === f.type))
+  );
+}
+// returns {w1:[7], w0:[7], mm:[7], s1,s0,sm}
+function series(f){
+  const rows = matchRows(f);
+  const out = { w1:[], w0:[], mm:[], s1:0, s0:0, sm:0 };
+  for(let i = 0; i < 7; i++){
+    let a = 0, b = 0, c = 0;
+    const i1 = WIN.w1[i], i0 = WIN.w0[i], im = WIN.mm[i];
+    for(const r of rows){
+      if(i1 !== undefined) a += r.v[i1] || 0;
+      if(i0 !== undefined) b += r.v[i0] || 0;
+      if(im !== undefined && im >= 0) c += r.v[im] || 0;
+    }
+    out.w1.push(a); out.w0.push(b); out.mm.push(c);
+    out.s1 += a; out.s0 += b; out.sm += c;
+  }
+  return out;
+}
+
+/* ============ RENDER: filters ============ */
+function renderFilters(){
+  const pr = $('productRow'); pr.innerHTML = '';
+  PRODUCTS.forEach(p => {
+    const b = document.createElement('button');
+    b.className = 'pill-btn' + (p.key === state.product ? ' active' : '');
+    b.textContent = p.label;
+    b.onclick = () => {
+      state.product = p.key;
+      state.metric = prodCfg(p.key).metrics[0].k;
+      state.sub = '__ALL__';
+      renderAll();
+    };
+    pr.appendChild(b);
+  });
+
+  const cfg = prodCfg(state.product);
+  const mt = $('metricToggle'); mt.innerHTML = '';
+  cfg.metrics.forEach(m => {
+    const b = document.createElement('button');
+    b.className = m.k === state.metric ? 'active' : '';
+    b.textContent = m.label;
+    b.onclick = () => { state.metric = m.k; renderAll(); };
+    mt.appendChild(b);
+  });
+
+  renderShopRow();
+
+  const bar = $('subBar'), row = $('subRow');
+  if(cfg.sub){
+    bar.classList.remove('hidden');
+    $('subBarLabel').textContent = cfg.sub;
+    const subs = subValues();
+    row.innerHTML = '';
+    [['__ALL__','ทั้งหมด']].concat(subs.map(s => [s,s])).forEach(([k,label]) => {
+      const b = document.createElement('button');
+      b.className = 'pill-btn sm' + (k === state.sub ? ' active' : '');
+      b.textContent = label;
+      b.onclick = () => { state.sub = k; renderAll(); };
+      row.appendChild(b);
+    });
+  } else {
+    bar.classList.add('hidden');
+  }
+}
+
+function shortShop(name){
+  return String(name).replace(/^True Shop\s*/i,'').trim() || name;
+}
+function renderShopRow(){
+  const row = $('shopRow'); row.innerHTML = '';
+  const all = !state.shops || state.shops.size === 0 || state.shops.size === DATA.shops.length;
+
+  const bAll = document.createElement('button');
+  bAll.className = 'pill-btn sm shop' + (all ? ' active' : '');
+  bAll.textContent = '\u0e17\u0e38\u0e01\u0e2a\u0e32\u0e02\u0e32';
+  bAll.onclick = () => { state.shops = null; renderAll(); };
+  row.appendChild(bAll);
+
+  DATA.shops.forEach(sh => {
+    const on = !all && state.shops.has(sh.code);
+    const b = document.createElement('button');
+    b.className = 'pill-btn sm shop' + (on ? ' active' : '');
+    b.title = sh.name + ' \u00b7 ' + sh.code + ' \u00b7 ' + sh.type;
+    b.innerHTML = (on ? '<span class="tick">\u2713</span>' : '') + shortShop(sh.name);
+    b.onclick = () => {
+      if(!state.shops || state.shops.size === 0 || state.shops.size === DATA.shops.length){
+        state.shops = new Set([sh.code]);           // first pick starts a fresh selection
+      } else if(state.shops.has(sh.code)){
+        state.shops.delete(sh.code);
+        if(state.shops.size === 0) state.shops = null;
+      } else {
+        state.shops.add(sh.code);
+      }
+      renderAll();
+    };
+    row.appendChild(b);
+  });
+
+  const sel = activeShops();
+  $('shopCount').textContent = all
+    ? '\u0e17\u0e31\u0e49\u0e07\u0e2b\u0e21\u0e14 ' + DATA.shops.length + ' \u0e2a\u0e32\u0e02\u0e32'
+    : '\u0e40\u0e25\u0e37\u0e2d\u0e01 ' + sel.length + ' / ' + DATA.shops.length + ' \u0e2a\u0e32\u0e02\u0e32';
+}
+function subValues(){
+  const set = new Set();
+  DATA.rows.forEach(r => { if(r.p === state.product && r.s) set.add(r.s); });
+  return [...set].sort();
+}
+
+/* ============ RENDER: KPI ============ */
+function renderKPI(){
+  const cfg = prodCfg(state.product);
+  const grid = $('kpiGrid'); grid.innerHTML = '';
+  const subTxt = (cfg.sub && state.sub !== '__ALL__') ? ' · ' + state.sub : '';
+  $('ovTitle').textContent = 'ภาพรวม ' + cfg.label + subTxt;
+    $('ovSub').textContent = ovScopeText();
+  $('ovTag').textContent = '\u0e20\u0e32\u0e1e\u0e23\u0e27\u0e21 \u00b7 ' + (activeShops().length === DATA.shops.length ? '\u0e17\u0e38\u0e01\u0e2a\u0e32\u0e02\u0e32\u0e43\u0e19 BMA II' : activeShops().length + ' \u0e2a\u0e32\u0e02\u0e32\u0e17\u0e35\u0e48\u0e40\u0e25\u0e37\u0e2d\u0e01');
+
+  cfg.metrics.forEach(m => {
+    const saveMetric = state.metric;
+    state.metric = m.k;
+    const s = series({ sub: state.sub });
+    state.metric = saveMetric;
+    const money = m.kind === 'money';
+
+    grid.appendChild(kpiCard(m.label, 'Week on Week', s.s1, s.s0, money, 'เทียบ ' + WIN.lblW0));
+    grid.appendChild(kpiCard(m.label, 'Month on Month', s.s1, s.sm, money, 'เทียบ ' + WIN.lblMM));
+  });
+}
+
+function ovScopeText(){
+  const sel = activeShops(), all = sel.length === DATA.shops.length;
+  const who = all
+    ? '\u0e22\u0e2d\u0e14\u0e23\u0e27\u0e21\u0e17\u0e38\u0e01\u0e2a\u0e32\u0e02\u0e32\u0e43\u0e19 BMA II South West (' + DATA.shops.length + ' \u0e2a\u0e32\u0e02\u0e32)'
+    : '\u0e40\u0e09\u0e1e\u0e32\u0e30 ' + sel.length + ' \u0e2a\u0e32\u0e02\u0e32\u0e17\u0e35\u0e48\u0e40\u0e25\u0e37\u0e2d\u0e01: ' + sel.map(x => shortShop(x.name)).join(', ');
+  return who + ' \u2014 \u0e2a\u0e35\u0e40\u0e02\u0e35\u0e22\u0e27 = \u0e40\u0e1e\u0e34\u0e48\u0e21\u0e02\u0e36\u0e49\u0e19, \u0e2a\u0e35\u0e41\u0e14\u0e07 = \u0e25\u0e14\u0e25\u0e07';
+}
+function kpiCard(metricLabel, cmp, cur, base, money, note){
+  const el = document.createElement('div');
+  el.className = 'card';
+  const cls = dirClass(cur, base);
+  el.innerHTML =
+    '<div class="kpi-head"><span class="kpi-label">' + metricLabel + '</span><span class="kpi-cmp">' + cmp + '</span></div>' +
+    '<div class="kpi-value">' + fmtCompact(cur, money) + '</div>' +
+    '<div class="kpi-delta ' + cls + '"><span>' + arrow(cur, base) + ' ' + pctStr(cur, base) + '</span>' +
+      '<span class="amt">(' + signed(cur - base, money) + ')</span></div>' +
+    '<div class="kpi-note">' + note + ' · ฐาน <b>' + fmtCompact(base, money) + '</b></div>';
+  return el;
+}
+
+/* ============ RENDER: chart (line) ============ */
+function renderChart(){
+  const cfg = prodCfg(state.product);
+  const mLabel = cfg.metrics.find(m => m.k === state.metric).label;
+  const money = isMoney();
+  const subTxt = (cfg.sub && state.sub !== '__ALL__') ? ' \u00b7 ' + state.sub : '';
+  $('chartTitle').textContent = '\u0e22\u0e2d\u0e14\u0e02\u0e32\u0e22\u0e23\u0e32\u0e22\u0e27\u0e31\u0e19 \u2014 ' + cfg.label + subTxt + ' (' + mLabel + ')';
+
+  $('chartLegend').innerHTML =
+    '<span><i class="legend-swatch" style="background:var(--series-1)"></i>7 \u0e27\u0e31\u0e19\u0e25\u0e48\u0e32\u0e2a\u0e38\u0e14 \u00b7 ' + WIN.lblW1 + '</span>' +
+    '<span><i class="legend-swatch" style="background:var(--series-2)"></i>7 \u0e27\u0e31\u0e19\u0e01\u0e48\u0e2d\u0e19\u0e2b\u0e19\u0e49\u0e32 \u00b7 ' + WIN.lblW0 + '</span>' +
+    '<span><i class="legend-swatch" style="background:var(--series-3)"></i>\u0e40\u0e14\u0e37\u0e2d\u0e19\u0e01\u0e48\u0e2d\u0e19 \u00b7 ' + WIN.lblMM + '</span>';
+
+  drawLineChart();
+}
+
+function niceStep(v){
+  if(v <= 0) return 1;
+  const exp = Math.pow(10, Math.floor(Math.log10(v)));
+  const f = v / exp;
+  const opts = [1,1.5,2,2.5,3,4,5,6,8,10];
+  for(const o of opts) if(f <= o + 1e-9) return o * exp;
+  return 10 * exp;
+}
+
+function drawLineChart(){
+  const host = $('chartRows');
+  const money = isMoney();
+  const s = series({ sub: state.sub });
+  const W = Math.max(320, host.clientWidth || 880);
+  const narrow = W < 560;
+  const H = narrow ? 260 : 330;
+  const PAD = { t: 26, r: narrow ? 14 : 20, b: narrow ? 46 : 52, l: narrow ? 46 : 68 };
+  const iw = W - PAD.l - PAD.r, ih = H - PAD.t - PAD.b;
+
+  const ticks = 4;
+  const rawMax = Math.max(1, ...s.w1, ...s.w0, ...s.mm);
+  const step = niceStep(rawMax * 1.10 / ticks);
+  const top = step * ticks;
+  const X = i => PAD.l + (7 === 1 ? 0 : i * iw / 6);
+  const Y = v => PAD.t + ih - (v / top) * ih;
+
+  const SERIES = [
+    { key:'w1', cls:'s1', color:'var(--series-1)', label:'7 \u0e27\u0e31\u0e19\u0e25\u0e48\u0e32\u0e2a\u0e38\u0e14', vals:s.w1 },
+    { key:'w0', cls:'s2', color:'var(--series-2)', label:'7 \u0e27\u0e31\u0e19\u0e01\u0e48\u0e2d\u0e19\u0e2b\u0e19\u0e49\u0e32', vals:s.w0 },
+    { key:'mm', cls:'s3', color:'var(--series-3)', label:'\u0e40\u0e14\u0e37\u0e2d\u0e19\u0e01\u0e48\u0e2d\u0e19', vals:s.mm },
+  ];
+
+  let g = '';
+  for(let t = 0; t <= ticks; t++){
+    const v = top * t / ticks, y = Y(v);
+    g += '<line x1="' + PAD.l + '" y1="' + y + '" x2="' + (PAD.l + iw) + '" y2="' + y + '" stroke="var(--border-soft)" stroke-width="1"/>';
+    g += '<text x="' + (PAD.l - 9) + '" y="' + (y + 4) + '" text-anchor="end" font-size="' + (narrow ? 9.5 : 11) + '" fill="var(--ink-muted)">' + fmtCompact(v, money) + '</text>';
+  }
+  g += '<line x1="' + PAD.l + '" y1="' + (PAD.t + ih) + '" x2="' + (PAD.l + iw) + '" y2="' + (PAD.t + ih) + '" stroke="var(--border)" stroke-width="1"/>';
+
+  // x labels
+  let xl = '';
+  for(let i = 0; i < 7; i++){
+    const d1 = DATA.dates[WIN.w1[i]];
+    xl += '<text x="' + X(i) + '" y="' + (PAD.t + ih + 19) + '" text-anchor="middle" font-size="' + (narrow ? 9.5 : 11.5) + '" font-weight="600" fill="var(--ink-secondary)">' + dowLabel(d1) + ' ' + d1.split('-')[2]*1 + '</text>';
+    xl += '<text x="' + X(i) + '" y="' + (PAD.t + ih + 34) + '" text-anchor="middle" font-size="' + (narrow ? 8.5 : 10) + '" fill="var(--ink-muted)">' + TH_MON[+d1.split('-')[1]-1] + '</text>';
+  }
+
+  // area under focal series
+  let area = 'M' + X(0) + ',' + Y(s.w1[0]);
+  for(let i = 1; i < 7; i++) area += ' L' + X(i) + ',' + Y(s.w1[i]);
+  area += ' L' + X(6) + ',' + (PAD.t + ih) + ' L' + X(0) + ',' + (PAD.t + ih) + ' Z';
+
+  let paths = '<path d="' + area + '" fill="var(--series-1)" opacity="0.13"/>';
+  SERIES.forEach(se => {
+    let d = 'M' + X(0) + ',' + Y(se.vals[0]);
+    for(let i = 1; i < 7; i++) d += ' L' + X(i) + ',' + Y(se.vals[i]);
+    paths += '<path d="' + d + '" fill="none" stroke="' + se.color + '" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"' +
+      (se.key === 'mm' ? ' stroke-dasharray="6 4"' : '') + '/>';
+  });
+  SERIES.forEach(se => {
+    for(let i = 0; i < 7; i++){
+      paths += '<circle cx="' + X(i) + '" cy="' + Y(se.vals[i]) + '" r="' + (se.key === 'w1' ? 5 : 4) + '" fill="' + se.color + '" stroke="var(--surface)" stroke-width="2"/>';
+    }
+  });
+
+  // direct labels on focal series
+  let lbls = '';
+  for(let i = 0; i < 7; i++){
+    const y = Y(s.w1[i]);
+    const above = y > PAD.t + 22;
+    const anch = i === 0 ? 'start' : i === 6 ? 'end' : 'middle';
+    lbls += '<text x="' + X(i) + '" y="' + (above ? y - 12 : y + 20) + '" text-anchor="' + anch + '" font-size="' + (narrow ? 9.5 : 11.5) + '" font-weight="700" fill="var(--ink-primary)">' + fmtCompact(s.w1[i], money) + '</text>';
+  }
+
+  // hover columns
+  let hits = '<g id="crosshair" style="display:none"><line id="chLine" y1="' + PAD.t + '" y2="' + (PAD.t + ih) + '" stroke="var(--ink-muted)" stroke-width="1" stroke-dasharray="3 3"/></g>';
+  for(let i = 0; i < 7; i++){
+    hits += '<rect class="ch-hit" data-i="' + i + '" x="' + (X(i) - iw/12) + '" y="' + PAD.t + '" width="' + (iw/6) + '" height="' + ih + '" fill="transparent" style="cursor:crosshair"/>';
+  }
+
+  host.innerHTML = '<svg viewBox="0 0 ' + W + ' ' + H + '" width="100%" height="' + H + '" role="img" ' +
+    'aria-label="\u0e01\u0e23\u0e32\u0e1f\u0e40\u0e2a\u0e49\u0e19\u0e22\u0e2d\u0e14\u0e02\u0e32\u0e22\u0e23\u0e32\u0e22\u0e27\u0e31\u0e19 3 \u0e0a\u0e48\u0e27\u0e07\u0e40\u0e17\u0e35\u0e22\u0e1a\u0e01\u0e31\u0e19" style="display:block">' +
+    g + xl + paths + lbls + hits + '</svg>';
+
+  const svg = host.querySelector('svg');
+  const cross = svg.querySelector('#crosshair');
+  const chLine = svg.querySelector('#chLine');
+  svg.querySelectorAll('.ch-hit').forEach(r => {
+    r.addEventListener('mousemove', e => {
+      const i = +r.dataset.i;
+      chLine.setAttribute('x1', X(i)); chLine.setAttribute('x2', X(i));
+      cross.style.display = '';
+      const d1 = DATA.dates[WIN.w1[i]];
+      const d0 = WIN.w0[i] !== undefined ? DATA.dates[WIN.w0[i]] : null;
+      const dm = WIN.mmDates[i];
+      const html =
+        '<div class="tt-title">' + dowLabel(d1) + ' ' + fmtDateTH(d1, true) + '</div>' +
+        ttRow('var(--series-1)', '7 \u0e27\u0e31\u0e19\u0e25\u0e48\u0e32\u0e2a\u0e38\u0e14', s.w1[i], money) +
+        ttRow('var(--series-2)', (d0 ? fmtDateTH(d0,false) : '\u2014'), s.w0[i], money) +
+        ttRow('var(--series-3)', (dm ? fmtDateTH(dm,false) : '\u2014'), s.mm[i], money) +
+        '<div class="tt-row" style="margin-top:5px;border-top:1px solid rgba(255,255,255,.18);padding-top:5px"><span>WoW</span><b>' + pctStr(s.w1[i], s.w0[i]) + '</b></div>' +
+        '<div class="tt-row"><span>MoM</span><b>' + pctStr(s.w1[i], s.mm[i]) + '</b></div>';
+      showTip(e, html);
+    });
+    r.addEventListener('mouseleave', () => { cross.style.display = 'none'; hideTip(); });
+  });
+}
+
+let rsTimer = null;
+addEventListener('resize', () => { clearTimeout(rsTimer); rsTimer = setTimeout(() => { if(WIN) drawLineChart(); }, 160); });
+
+function ttRow(color, label, v, money){
+  return '<div class="tt-row"><span><i class="tt-sw" style="background:' + color + '"></i>' + label + '</span><b>' + fmtVal(v, money) + '</b></div>';
+}
+function showTip(e, html){
+  const t = $('tooltip');
+  t.innerHTML = html; t.classList.add('show');
+  const r = t.getBoundingClientRect();
+  let x = e.clientX + 14, y = e.clientY - r.height/2;
+  if(x + r.width > innerWidth - 8) x = e.clientX - r.width - 14;
+  if(y < 8) y = 8;
+  if(y + r.height > innerHeight - 8) y = innerHeight - r.height - 8;
+  t.style.left = x + 'px'; t.style.top = y + 'px';
+}
+function hideTip(){ $('tooltip').classList.remove('show'); }
+
+/* ============ TABLES ============ */
+function buildTable(tableEl, rowsData, firstColLabel, opts){
+  const money = isMoney();
+  const cfg = prodCfg(state.product);
+  const mLabel = cfg.metrics.find(m => m.k === state.metric).label;
+  const sortable = !!(opts && opts.sortable);
+
+  if(sortable){
+    rowsData = rowsData.slice().sort((a,b) => {
+      const k = state.sortKey;
+      let va, vb;
+      if(k === 'name'){ return a.name.localeCompare(b.name) * state.sortDir * -1; }
+      if(k === 'wowp'){ va = a.s0 ? (a.s1-a.s0)/Math.abs(a.s0) : -99; vb = b.s0 ? (b.s1-b.s0)/Math.abs(b.s0) : -99; }
+      else if(k === 'momp'){ va = a.sm ? (a.s1-a.sm)/Math.abs(a.sm) : -99; vb = b.sm ? (b.s1-b.sm)/Math.abs(b.sm) : -99; }
+      else if(k === 'wowd'){ va = a.s1-a.s0; vb = b.s1-b.s0; }
+      else if(k === 'momd'){ va = a.s1-a.sm; vb = b.s1-b.sm; }
+      else { va = a.s1; vb = b.s1; }
+      return (va - vb) * state.sortDir;
+    });
+  }
+
+  const th = (key, label, cls) => {
+    const sorted = sortable && state.sortKey === key;
+    return '<th class="' + (cls||'') + (sortable ? ' th-sort' : '') + (sorted ? ' sorted' : '') + '"' +
+      (sortable ? ' data-key="' + key + '" tabindex="0"' : '') + '>' + label + (sorted ? (state.sortDir === -1 ? ' ↓' : ' ↑') : '') + '</th>';
+  };
+
+  let html = '<thead>' +
+    '<tr class="grp"><th></th>' +
+      '<th colspan="4" class="wow grp-div">Week on Week · ' + WIN.lblW1 + ' vs ' + WIN.lblW0 + '</th>' +
+      '<th colspan="3" class="grp-div">Month on Month · vs ' + WIN.lblMM + '</th></tr>' +
+    '<tr>' + th('name', firstColLabel) +
+      th('w1', '7 วันล่าสุด (' + mLabel + ')', 'grp-div') +
+      th('w0', '7 วันก่อนหน้า') +
+      th('wowd', '+/− จำนวน') +
+      th('wowp', '% WoW') +
+      th('mm', 'เดือนก่อน', 'grp-div') +
+      th('momd', '+/− จำนวน') +
+      th('momp', '% MoM') +
+    '</tr></thead><tbody>';
+
+  let t1 = 0, t0 = 0, tm = 0;
+  rowsData.forEach(r => {
+    t1 += r.s1; t0 += r.s0; tm += r.sm;
+    html += '<tr><td>' + r.nameHtml + '</td>' +
+      '<td class="grp-div"><b>' + fmtVal(r.s1, money) + '</b></td>' +
+      '<td>' + fmtVal(r.s0, money) + '</td>' +
+      '<td class="' + dirClass(r.s1, r.s0) + '">' + signedFull(r.s1 - r.s0, money) + '</td>' +
+      '<td class="pct ' + dirClass(r.s1, r.s0) + '">' + pctStr(r.s1, r.s0) + '</td>' +
+      '<td class="grp-div">' + fmtVal(r.sm, money) + '</td>' +
+      '<td class="' + dirClass(r.s1, r.sm) + '">' + signedFull(r.s1 - r.sm, money) + '</td>' +
+      '<td class="pct ' + dirClass(r.s1, r.sm) + '">' + pctStr(r.s1, r.sm) + '</td></tr>';
+  });
+  html += '</tbody><tfoot><tr><td>รวมทั้งหมด</td>' +
+    '<td class="grp-div">' + fmtVal(t1, money) + '</td>' +
+    '<td>' + fmtVal(t0, money) + '</td>' +
+    '<td class="' + dirClass(t1, t0) + '">' + signedFull(t1 - t0, money) + '</td>' +
+    '<td class="pct ' + dirClass(t1, t0) + '">' + pctStr(t1, t0) + '</td>' +
+    '<td class="grp-div">' + fmtVal(tm, money) + '</td>' +
+    '<td class="' + dirClass(t1, tm) + '">' + signedFull(t1 - tm, money) + '</td>' +
+    '<td class="pct ' + dirClass(t1, tm) + '">' + pctStr(t1, tm) + '</td></tr></tfoot>';
+
+  tableEl.innerHTML = html;
+  if(sortable){
+    tableEl.querySelectorAll('.th-sort').forEach(el => {
+      const go = () => {
+        const k = el.dataset.key;
+        if(state.sortKey === k) state.sortDir *= -1; else { state.sortKey = k; state.sortDir = -1; }
+        renderTables();
+      };
+      el.onclick = go;
+      el.onkeydown = e => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); go(); } };
+    });
+  }
+}
+
+function renderTables(){
+  const cfg = prodCfg(state.product);
+
+  // Shop Type
+  const typeRows = TYPE_ORDER.filter(t => activeShops().some(s => s.type === t)).map(t => {
+    const s = series({ sub: state.sub, type: t });
+    const cnt = activeShops().filter(x => x.type === t).length;
+    return { name:t, nameHtml:'<span class="shop-name">' + t + '</span><span class="shop-type">' + cnt + ' สาขา</span>', s1:s.s1, s0:s.s0, sm:s.sm };
+  });
+  buildTable($('typeTable'), typeRows, 'Shop Type', { sortable:false });
+
+  // Shop
+  const shopRows = activeShops().map(sh => {
+    const s = series({ sub: state.sub, code: sh.code });
+    return { name:sh.name, nameHtml:'<span class="shop-name">' + sh.name + '</span><span class="shop-type">' + sh.code + ' · ' + sh.type + '</span>', s1:s.s1, s0:s.s0, sm:s.sm };
+  });
+  buildTable($('shopTable'), shopRows, 'สาขา', { sortable:true });
+
+  // Sub dimension
+  const sec = $('subSection');
+  if(cfg.sub){
+    sec.style.display = '';
+    $('subSecTag').textContent = 'ระดับย่อย · ' + cfg.sub;
+    $('subSecTitle').textContent = 'แยกราย ' + cfg.sub;
+        $('subSecSub').textContent = (activeShops().length === DATA.shops.length ? '\u0e23\u0e27\u0e21\u0e17\u0e38\u0e01\u0e2a\u0e32\u0e02\u0e32\u0e43\u0e19 BMA II' : '\u0e40\u0e09\u0e1e\u0e32\u0e30 ' + activeShops().length + ' \u0e2a\u0e32\u0e02\u0e32\u0e17\u0e35\u0e48\u0e40\u0e25\u0e37\u0e2d\u0e01') + ' \u2014 \u0e40\u0e23\u0e35\u0e22\u0e07\u0e08\u0e32\u0e01\u0e22\u0e2d\u0e14 7 \u0e27\u0e31\u0e19\u0e25\u0e48\u0e32\u0e2a\u0e38\u0e14\u0e21\u0e32\u0e01\u0e44\u0e1b\u0e19\u0e49\u0e2d\u0e22';
+    const rows = subValues().map(v => {
+      const s = series({ sub: v });
+      return { name:v, nameHtml:'<span class="shop-name">' + v + '</span>', s1:s.s1, s0:s.s0, sm:s.sm };
+    }).sort((a,b) => b.s1 - a.s1);
+    buildTable($('subTable'), rows, cfg.sub, { sortable:false });
+  } else {
+    sec.style.display = 'none';
+  }
+}
+
+/* ============ INSIGHTS ============ */
+function renderInsights(){
+  const cfg = prodCfg(state.product);
+  const mLabel = cfg.metrics.find(m => m.k === state.metric).label;
+  const money = isMoney();
+  const grid = $('insightGrid'); grid.innerHTML = '';
+
+  const shopRows = activeShops().map(sh => {
+    const s = series({ sub: state.sub, code: sh.code });
+    return { name:sh.name, type:sh.type, s1:s.s1, s0:s.s0, sm:s.sm, d:s.s1 - s.s0 };
+  });
+  const up = shopRows.filter(r => r.d > 0).sort((a,b) => b.d - a.d);
+  const dn = shopRows.filter(r => r.d < 0).sort((a,b) => a.d - b.d);
+  const tot = shopRows.reduce((a,r) => ({ s1:a.s1+r.s1, s0:a.s0+r.s0, sm:a.sm+r.sm }), { s1:0,s0:0,sm:0 });
+
+  const card = (kind, badge, title, body) => {
+    const el = document.createElement('div');
+    el.className = 'insight-card ' + kind;
+    el.innerHTML = '<span class="insight-badge ' + (kind||'info') + '">' + badge + '</span>' +
+      '<div class="insight-title">' + title + '</div><div class="insight-body">' + body + '</div>';
+    grid.appendChild(el);
+  };
+
+  const wowKind = tot.s1 >= tot.s0 ? 'good' : 'critical';
+  card(wowKind, 'Week on Week', cfg.label + ' ' + mLabel + ' ' + (tot.s1 >= tot.s0 ? 'เพิ่มขึ้น ' : 'ลดลง ') + pctStr(tot.s1, tot.s0).replace(/[+−]/,''),
+    '7 วันล่าสุด (' + WIN.lblW1 + ') ทำได้ <strong>' + fmtVal(tot.s1, money) + '</strong> เทียบ 7 วันก่อนหน้า (' + WIN.lblW0 + ') ที่ <strong>' + fmtVal(tot.s0, money) + '</strong> — เปลี่ยนแปลง <strong>' + signedFull(tot.s1 - tot.s0, money) + '</strong>');
+
+  const momKind = tot.s1 >= tot.sm ? 'good' : 'critical';
+  card(momKind, 'Month on Month', 'เทียบวันเดียวกันเดือนก่อน ' + (tot.s1 >= tot.sm ? 'ดีขึ้น ' : 'ต่ำกว่า ') + pctStr(tot.s1, tot.sm).replace(/[+−]/,''),
+    'ช่วง <strong>' + WIN.lblMM + '</strong> ทำได้ <strong>' + fmtVal(tot.sm, money) + '</strong> เทียบกับ <strong>' + fmtVal(tot.s1, money) + '</strong> ในสัปดาห์ล่าสุด — ต่าง <strong>' + signedFull(tot.s1 - tot.sm, money) + '</strong>');
+
+  if(up.length) card('good', 'สาขาที่โตเด่น', up[0].name,
+    'เพิ่มขึ้น <strong>' + signedFull(up[0].d, money) + '</strong> (' + pctStr(up[0].s1, up[0].s0) + ') จาก ' + fmtVal(up[0].s0, money) + ' → <strong>' + fmtVal(up[0].s1, money) + '</strong>' +
+    (up[1] ? '<br>รองลงมา: ' + up[1].name + ' ' + signedFull(up[1].d, money) + ' (' + pctStr(up[1].s1, up[1].s0) + ')' : ''));
+  else card('info', 'สาขาที่โตเด่น', 'ไม่มีสาขาที่เพิ่มขึ้น', 'สัปดาห์นี้ทุกสาขามียอด ' + mLabel + ' เท่าเดิมหรือลดลง');
+
+  if(dn.length) card('critical', 'สาขาที่ต้องเร่ง', dn[0].name,
+    'ลดลง <strong>' + signedFull(dn[0].d, money) + '</strong> (' + pctStr(dn[0].s1, dn[0].s0) + ') จาก ' + fmtVal(dn[0].s0, money) + ' → <strong>' + fmtVal(dn[0].s1, money) + '</strong>' +
+    (dn[1] ? '<br>รองลงมา: ' + dn[1].name + ' ' + signedFull(dn[1].d, money) + ' (' + pctStr(dn[1].s1, dn[1].s0) + ')' : ''));
+  else card('good', 'สาขาที่ต้องเร่ง', 'ไม่มีสาขาที่ลดลง', 'ทุกสาขามียอด ' + mLabel + ' เท่าเดิมหรือเพิ่มขึ้นเทียบสัปดาห์ก่อน');
+}
+
+/* ============ RENDER ALL ============ */
+function renderAll(){
+  computeWindows();
+  DATA.shopMap = {}; DATA.shops.forEach(s => DATA.shopMap[s.code] = s);
+  $('asofDate').textContent = fmtDateTH(WIN.asof, true);
+  $('lblW1').textContent = WIN.lblW1;
+  $('lblW0').textContent = WIN.lblW0;
+  $('lblMM').textContent = WIN.lblMM + (WIN.mmOk ? '' : ' (ข้อมูลไม่ครบ)');
+  renderFilters();
+  renderKPI();
+  renderChart();
+  renderTables();
+  renderInsights();
+  $('footnote').innerHTML =
+    'ที่มา: WeekOnweekBMA2.xlsx · ชีท Postpaid, True Online, GIA, Device · ข้อมูล ' + fmtDateTH(DATA.dates[0], true) + ' – ' + fmtDateTH(WIN.asof, true) + ' (' + DATA.dates.length + ' วัน)<br>' +
+    '<b>Week on Week</b> = ' + WIN.lblW1 + ' เทียบ ' + WIN.lblW0 + ' &nbsp;·&nbsp; <b>Month on Month</b> = ' + WIN.lblW1 + ' เทียบวันเดียวกันของเดือนก่อน ' + WIN.lblMM + '<br>' +
+    'True Online มีเฉพาะจำนวน Connect และ Register (ไม่มี Revenue ในไฟล์ต้นทาง) · Device ไม่รวมแถว Total ของแต่ละสาขา (คำนวณจากผลรวมราย Brand) · Revenue = Net Amount<br>' +
+    'ปุ่ม “อัปเดตข้อมูล” รองรับไฟล์ .xlsx ที่มีโครงสร้างเดียวกัน — ประมวลผลในเบราว์เซอร์เท่านั้น ไม่มีการส่งข้อมูลออกไปที่ใด';
+}
+
+/* ============ THEME ============ */
+(function initTheme(){
+  let saved = null;
+  try { saved = localStorage.getItem('bma2wow-theme'); } catch(e){}
+  if(saved) document.documentElement.setAttribute('data-theme', saved);
+  const btn = $('themeBtn');
+  const paint = () => {
+    const attr = document.documentElement.getAttribute('data-theme');
+    const dark = attr === 'dark' || (!attr && matchMedia('(prefers-color-scheme: dark)').matches);
+    btn.textContent = dark ? '☀️' : '🌙';
+    btn.title = dark ? 'สลับเป็นธีมสว่าง' : 'สลับเป็นธีมมืด';
+  };
+  btn.onclick = () => {
+    const attr = document.documentElement.getAttribute('data-theme');
+    const dark = attr === 'dark' || (!attr && matchMedia('(prefers-color-scheme: dark)').matches);
+    const next = dark ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('bma2wow-theme', next); } catch(e){}
+    paint();
+  };
+  paint();
+})();
+
+/* ============ TOAST ============ */
+let toastTimer = null;
+function toast(msg){
+  const t = $('toast'); t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3200);
+}
+
+/* ============ UPLOAD / PARSE ============ */
+const SHEETS = ['Postpaid','True Online','GIA','Device'];
+const PRODUCT_TOKENS = ['Postpay','True Online','GIA','Device'];
+const SHEET_PRODUCT = { 'Postpaid':'Postpaid', 'True Online':'True Online', 'GIA':'GIA', 'Device':'Device' };
+
+function toISO(v){
+  if(v instanceof Date){
+    return v.getFullYear() + '-' + String(v.getMonth()+1).padStart(2,'0') + '-' + String(v.getDate()).padStart(2,'0');
+  }
+  return null;
+}
+function parseWorkbook(wb){
+  const recs = [], shops = {}, dateSet = new Set();
+  SHEETS.forEach(name => {
+    const ws = wb.Sheets[name];
+    if(!ws) return;
+    const rows = XLSX.utils.sheet_to_json(ws, { header:1, raw:true, blankrows:true, defval:null });
+    let metric = 'qty', dcols = null, dimn = 0, curDates = [];
+    rows.forEach(r => {
+      if(!r || !r.length) return;
+      const a = r[0] == null ? '' : String(r[0]).trim();
+      const low = a.toLowerCase();
+      if(low === 'qty' || low === 'quantity'){ metric = 'qty'; return; }
+      if(low === 'net amount' || low === 'net' || low === 'revenue'){ metric = 'net'; return; }
+      if(a.indexOf('Product') === 0){
+        const cols = [];
+        for(let i = 0; i < r.length; i++) if(toISO(r[i])) cols.push(i);
+        if(!cols.length) return;
+        dcols = cols; dimn = cols[0];
+        curDates = cols.map(i => toISO(r[i]));
+        curDates.forEach(d => dateSet.add(d));
+        return;
+      }
+      if(PRODUCT_TOKENS.indexOf(a) >= 0 && dcols){
+        const code = r[1] == null ? '' : String(r[1]).trim();
+        const nm   = r[2] == null ? '' : String(r[2]).trim();
+        const st   = r[3] == null ? '' : String(r[3]).trim();
+        let sub = (dimn >= 5 && r[4] != null) ? String(r[4]).trim() : null;
+        if(sub === 'Total') return;
+        shops[code] = { code:code, name:nm, type:st };
+        const prod = SHEET_PRODUCT[name];
+        let m = metric;
+        if(prod === 'True Online'){ m = (sub||'').toLowerCase(); sub = null; }
+        const vals = {};
+        dcols.forEach((ci, di) => { const v = r[ci]; if(typeof v === 'number') vals[curDates[di]] = v; });
+        recs.push({ p:prod, c:code, s:sub, m:m, v:vals });
+      }
+    });
+  });
+  if(!recs.length) throw new Error('ไม่พบข้อมูลในไฟล์ (ต้องมีชีท Postpaid / True Online / GIA / Device)');
+
+  let dates = [...dateSet].sort();
+  while(dates.length && !recs.some(r => r.v[dates[dates.length-1]] !== undefined)) dates.pop();
+  const idx = {}; dates.forEach((d,i) => idx[d] = i);
+  const outRows = recs.map(r => {
+    const arr = new Array(dates.length).fill(0);
+    for(const d in r.v) if(d in idx) arr[idx[d]] = r.v[d];
+    return { p:r.p, c:r.c, s:r.s, m:r.m, v:arr };
+  });
+  return { dates:dates, shops:Object.keys(shops).sort().map(k => shops[k]), rows:outRows };
+}
+
+$('uploadBtn').onclick = () => $('fileInput').click();
+$('fileInput').onchange = e => {
+  const f = e.target.files && e.target.files[0];
+  if(!f) return;
+  const rd = new FileReader();
+  rd.onload = ev => {
+    try{
+      const wb = XLSX.read(new Uint8Array(ev.target.result), { type:'array', cellDates:true });
+      const nd = parseWorkbook(wb);
+      DATA = nd;
+      state.sub = '__ALL__';
+      state.shops = null;
+      renderAll();
+      toast('อัปเดตข้อมูลแล้ว · ล่าสุด ' + fmtDateTH(DATA.dates[DATA.dates.length-1], true));
+    }catch(err){
+      toast('อ่านไฟล์ไม่สำเร็จ: ' + err.message);
+    }
+    $('fileInput').value = '';
+  };
+  rd.readAsArrayBuffer(f);
+};
+
+/* ============ GO ============ */
+renderAll();
+</script>
+</body>
+</html>
